@@ -1,4 +1,6 @@
-**English** | [简体中文](README.zh-CN.md)
+**English** | [简体中文]
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24554632.svg)](https://doi.org/10.5281/zenodo.24554632)(README.zh-CN.md)
 
 # Embodied Intelligence: Definition, Clarification, Criteria, and Boundaries
 
@@ -27,15 +29,16 @@ Requires [tectonic](https://tectonic-typesetting.dev/). The first run downloads 
 
 ## Cite
 
-Yugui Yu. *Embodied Intelligence: Definition, Clarification, Criteria, and Boundaries*. YYG Strategy Lab, preprint, 2026. [Source](https://github.com/yuyuguilab/embodied-intelligence). The Zenodo DOI is added here when the first release is published.
+Yugui Yu. *Embodied Intelligence: Definition, Clarification, Criteria, and Boundaries*. Zenodo, v1.0.0. doi:[10.5281/zenodo.24554632](https://doi.org/10.5281/zenodo.24554632) (concept DOI; resolves to the latest version)
 
 ```bibtex
 @article{yu2026embodied,
   author  = {Yugui Yu},
   title   = {Embodied Intelligence: Definition, Clarification, Criteria, and Boundaries},
-  journal = {YYG Strategy Lab, preprint},
+  journal = {Zenodo},
   year    = {2026},
-  url     = {https://github.com/yuyuguilab/embodied-intelligence}
+  doi     = {10.5281/zenodo.24554632},
+  url     = {https://doi.org/10.5281/zenodo.24554632}
 }
 ```
 

@@ -1,5 +1,7 @@
 [English](README.md) | **简体中文**
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24554632.svg)](https://doi.org/10.5281/zenodo.24554632)
+
 # 具身智能：定义、澄清、判据与边界
 
 [AGI 人本拟合论](https://github.com/yuyuguilab/practice-fitting-theory)系列第七篇。2024 至 2026 年间，“具身智能”从机器人学与认知科学的术语成为多国政策文件、产业宣传与学术综述共用的词。本文把该理论的概念工具延伸到这一术语：
@@ -27,15 +29,16 @@ tectonic paper_zh.tex   # 中文版
 
 ## 引用
 
-余玉桂. 具身智能：定义、澄清、判据与边界. 余玉桂战略研究室, 预印本, 2026. [源码](https://github.com/yuyuguilab/embodied-intelligence)。首个版本发布后在此补 Zenodo DOI。
+余玉桂. 具身智能：定义、澄清、判据与边界. Zenodo, v1.0.0. doi:[10.5281/zenodo.24554632](https://doi.org/10.5281/zenodo.24554632)（概念 DOI，解析到最新版本）
 
 ```bibtex
 @article{yu2026embodied,
   author  = {Yugui Yu},
   title   = {Embodied Intelligence: Definition, Clarification, Criteria, and Boundaries},
-  journal = {YYG Strategy Lab, preprint},
+  journal = {Zenodo},
   year    = {2026},
-  url     = {https://github.com/yuyuguilab/embodied-intelligence}
+  doi     = {10.5281/zenodo.24554632},
+  url     = {https://doi.org/10.5281/zenodo.24554632}
 }
 ```
 
