@@ -1,0 +1,783 @@
+% English edition. Build: tectonic paper.tex
+\documentclass[10pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{newtxtext}
+\usepackage{newtxmath}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{rotating}
+\usepackage{xurl}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\hypersetup{pdftitle={Embodied Intelligence: Definition, Clarification, Criteria, and Boundaries},pdfauthor={Yugui Yu (YYG Strategy Lab)},pdfsubject={A definition and clarification of embodied intelligence, its criteria, and its distinction from intelligence, the machine mind, world models, and AGI},pdfkeywords={embodied intelligence, physical AI, capacity concept, predicate attribution, conjunction, artificial general intelligence, human-referential fitting theory}}
+\usepackage[fontset=fandol]{ctex}
+% Japanese and Korean glyphs occur only in reference titles; the Fandol fonts contain neither.
+% Both families come from the Tectonic bundle, with explicit extensions (the text font package newtx
+% alters how fontspec completes file names). If one is missing, its glyphs are dropped and the log warns.
+\IfFontExistsTF{HaranoAjiMincho-Regular.otf}{\newCJKfontfamily\jafont{HaranoAjiMincho-Regular}[Extension=.otf]}{\newcommand*{\jafont}{}}
+\IfFontExistsTF{UnBatang.ttf}{\newCJKfontfamily\hangulfont{UnBatang}[Extension=.ttf]}{\newcommand*{\hangulfont}{}}
+% ctex localizes float/caption names; the English edition keeps English
+\renewcommand{\abstractname}{Abstract}
+\renewcommand{\figurename}{Figure}
+\renewcommand{\tablename}{Table}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlength{\tabcolsep}{4pt}
+% Tables 4 and 5 are nearly a page tall; the default top fraction would defer them past the bibliography
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.3}
+\renewcommand{\textfraction}{0.06}
+\renewcommand{\floatpagefraction}{0.75}
+
+\title{Embodied Intelligence: Definition, Clarification, Criteria, and Boundaries}
+
+\author{Yugui Yu\\ YYG Strategy Lab\\ \texttt{they4897@gmail.com}}
+
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent Between 2024 and 2026, ``embodied intelligence'' grew from a term in robotics and cognitive science into a word shared by policy documents, industry publicity, and academic surveys in many countries, without acquiring a stable definition; its parallel English names, embodied AI and physical AI, are in the same case. This paper extends the conceptual toolkit of the human-referential fitting theory to that term. (1)~\textbf{Definition}: embodiment is a relational property of a system and an environment. A system $S$ is embodied relative to an environment $E$ if and only if its actions change the state of $E$ through physical causation and its feedback comes from physical measurement (the physical closed loop), and its response latency lies below the characteristic time of the task-relevant physical process in $E$ (timing prescribed by the environment). Embodied intelligence is the conjunction of two independent predicates, ``embodied'' and ``intelligent''; it constitutes no new concept type but a restricted case of the capacity concept over physical environment classes. (2)~\textbf{Clarification}: censuses of the English- and Chinese-language definitional corpus show that the existing disagreements have three sources---one limb of the conjunction written into the definition, the environment class left undeclared, and the level of the word left undistinguished. The three illicit slides each reappear in this discourse, joined by a fourth specific to it: conjunction confusion. (3)~\textbf{Criteria}: the two conditions yield four executable tests---the closed-loop test, the body-swap test, the rollback test, and the pause test---and the timing margin gives a quantitative reading of ``weak embodiment.'' (4)~\textbf{Distinctions and evidence}: embodied intelligence implies neither the machine mind nor the world model; the claim that embodied intelligence is the road to AGI holds as a capacity claim but is not a conceptual inference as a route claim; and evidence from policy, think-tank, and corporate texts shows that systems which are embodied but lack the capacity, and systems which have the capacity but are not embodied, are both given the name. Seven falsifiability clauses, an admission protocol for new cases, and a survival clause close the paper.
+\end{abstract}
+
+\medskip
+\noindent\textbf{Keywords:} embodied intelligence; physical AI; capacity concept; predicate attribution; conjunction; artificial general intelligence; human-referential fitting theory
+
+\section{Introduction}\label{sec:intro}
+
+``Embodied intelligence'' was originally a term in robotics and cognitive science; between 2024 and 2026 it entered the policy texts and corporate discourse of many countries. China's Government Work Reports listed it among the future industries in both 2025 and 2026 \cite{govreport2025,govreport2026}; in December 2025 the International Telecommunication Union published the first international standard for embodied artificial intelligence systems, ``Requirements and Framework for Embodied Artificial Intelligence Systems'' \cite{itu2025}, and in February 2026 it established a focus group on embodied AI \cite{caict2026}; eight Chinese universities applied to add an undergraduate major in ``embodied intelligence'' in 2025 \cite{yicai2025}. Governments do not share a name for it: the national plans of Japan and the Republic of Korea adopt physical AI \cite{japan2026,korea2026}; the European Commission calls the robotics revolution ``physical AI'' \cite{eu2025}; the United Kingdom defines smart machines through embodied intelligence \cite{uk2025}; and the United States' AI Action Plan calls autonomous drones, self-driving cars, and robotics ``new innovations in the physical world'' whose ``terminology does not yet exist,'' while the document itself uses neither physical AI nor embodied AI \cite{aiaap2025}. On the corporate and investor side, NVIDIA's chief executive told the Consumer Electronics Show of January 2025 that ``the next frontier of AI is physical AI'' \cite{ces2025}; Figure's humanoids demonstrate logistics work in BMW's plants \cite{figure_f03}; and Morgan Stanley estimates a humanoid robot market of five trillion dollars by 2050 \cite{morganstanley2025}.
+
+The scale of investment and the scale of actual use are observably apart \cite{caict2026,idc2026,reuters2026}, and the state of the definition is more out of proportion with that attention still. In English the name itself is unstable: the policy think tank CSET judges that the field ``lacks a shared name'' \cite{cset2026} (quotations from Chinese-language sources are translated by the author here and throughout); NVIDIA used embodied AI in its 2024 releases and switched to physical AI from 2025, with no statement distinguishing the two \cite{nvidia2024,ces2025,nvglossary}; and surveys, glossary entries, and encyclopedias each give their own definition (Table~\ref{tab:englishdefinitions}). Ten citable definition sentences exist in the Chinese-language context, disagreeing on four axes---carrier scope, superordinate concept, definitional sentence form, and the source of intelligence (Section~\ref{sec:clarify}). Standardization advances while the term does not keep up: as of August 2026, the 52 national standard-development plans for humanoid robots issued by the national robotics standardization technical committee cover components, datasets, complete machines, system integration, testing, and safety, with no terminology standard \cite{caict2026}; the State Council's opinion on deepening the ``AI+'' action never uses the word \cite{guofa2025}.
+
+Our diagnosis of this situation is that the word ``embodied intelligence'' conjoins two predicates that are independent of each other. ``Embodied'' is about where the closed loop runs and who sets the timing; ``intelligent'' is about what can be done within a given range. Each predicate has its own criteria; each can hold without implying the other. Once one word conjoins them, evidence for one limb is read as evidence for both: what has a body is taken to have intelligence; a strong model is taken to be embodied. The definitional dispute is therefore largely a dispute of positions: each party has written a different limb of the conjunction, or a different level of the word, into its definition.
+
+The paper's central claim follows: embodied intelligence introduces no new concept type; it is the capacity concept restricted to physical environment classes---when the environment argument of ``intelligent'' takes the physical world, two constraints apply that software environments do not have. That claim extends the typology of \textit{Four Concepts, Four Types} \cite{yu2026four} and the definitional method of \textit{World Models: Definition, Clarification, Distinction, and Boundaries} \cite{yu2026wm} to this term. Those two papers treated type confusion and one word across many positions; here an additional structure appears: one word conjoining two predicates.
+
+The question ``is $X$ embodied intelligence?'' must therefore be split into three: relative to which environment is $X$ embodied; how large is $X$'s capacity over that environment class; and at which level is the word being used.
+
+The paper proceeds as follows. Section~\ref{sec:definition} gives the definition, its derivation, its discriminative force, and the concept type. Section~\ref{sec:clarify} treats the names, the four levels of the word, the four illicit slides, and the English- and Chinese-language definitional corpora. Section~\ref{sec:criteria} gives the four tests. Section~\ref{sec:distinction} separates embodied intelligence from intelligence, the machine mind, the world model, and AGI. Section~\ref{sec:evidence} presents evidence in both directions of the conjunction. Section~\ref{sec:falsifiable} states the falsifiability clauses, the admission protocol, and the survival clause.
+
+\section{Definition: Conditions, Derivation, and Type}\label{sec:definition}
+
+\subsection{Definition}\label{sec:def}
+
+\textbf{Definition 1 (embodiment).} A system $S$ is embodied relative to an environment $E$ if and only if, while executing a task in $E$, it satisfies two conditions:
+
+\begin{itemize}
+\item[\textbf{(E1)}]\textbf{Physical closed loop.} $S$'s actions change the state of $E$ through physical causation; the outcome of the task is decided by the physical consequences of that change, not by how $S$'s output is interpreted; and $S$'s feedback---if any---comes from physical measurement, not from symbols.
+\item[\textbf{(E2)}]\textbf{Timing prescribed by the environment.} The task-relevant physical process in $E$ does not pause for $S$'s computation; the latency $S$ needs to complete one cycle of perception, decision, and action is below the characteristic time of that process (operationalized in Section~\ref{sec:pause}).
+\end{itemize}
+
+\textbf{Definition 2 (embodied intelligence).} $S$ has embodied intelligence relative to $E$ if and only if $S$ is embodied relative to $E$ and $S$ is intelligent relative to $E$. The latter predicate is the capacity concept defined in \textit{Four Concepts, Four Types}: it answers ``what can the system do, within what range,'' and its attribution level is the combination of system and environment \cite{yu2026four}.
+
+Five remarks are needed.
+
+\textit{First, the attribution unit is the combination of system and environment.} ``Embodied'' is neither a property of the body nor a property of the model. Having a body does not amount to being embodied: a humanoid robot teleoperated step by step by a human has its actions and its feedback both pass through the human (Table~\ref{tab:boundary}). The system boundary therefore precedes the verdict: in ``large model plus robot,'' what is not embodied is the large model; what is embodied is the whole system comprising sensors, controller, and actuators. The two clauses of E1, ``how the output is interpreted'' and ``symbols,'' concern only the interface between $S$ and $E$, not the interfaces inside the system: a system that runs on large-model planning plus a skill library passes through symbols internally while still acting on the environment through physical causation. Zheng et al.\ cite Fei-Fei Li and Krishna to the effect that ``embodied'' does not simply denote a physical object but ``the overall requirements and functions of interacting with and executing in the environment'' \cite{zheng2026}; this paper turns that clarification into decidable conditions.
+
+\textit{Second, the environment is a parameter.} ``$S$ is embodied'' is an incomplete assertion; a complete one carries an environment class. E2 makes this relativity measurable: a process whose characteristic time is counted in days (concrete curing, composting) places almost no demand on response latency, while a process counted in milliseconds (grasping, walking, sharing space with humans) demands control-system-grade latencies. The two conditions give the verdict; the timing margin (Section~\ref{sec:pause}) separately gives a continuous measure.
+
+\textit{Third, the definition does not presuppose three things.} It does not presuppose an implementation: a system running on a control law, one running an end-to-end policy, and one running large-model planning plus a skill library are equally embodied when the two conditions hold. It does not presuppose a morphology: robotic arms, quadrupeds, vehicles, drones, and fixed process controllers can all be embodied. It does not presuppose that the body shares the computation: the morphological-computation tradition characterizes embodiment through the body's contribution to control \cite{pfeifer2006,muller2017,liu2025csur}; this paper places that property in the implementation layer---it says how the intelligence is obtained, not where the closed loop runs.
+
+\textit{Fourth, the two limbs differ in form of judgment.} The embodiment limb is decided by the two conditions: E1 is bivalent, and E2 admits of degree through the timing margin. The capacity limb is a capacity concept; its completed form of definition is a measurement \cite{yu2026four}, and there is no bivalent shortcut. Definition 2 is therefore gradual on the capacity side: whether a system is called embodied intelligent depends on the threshold the claimant declares for the capacity limb. Evaluation practice already has a precedent of paired thresholds: an evaluation report judged that GPT-6-Astra ``has largely crossed the threshold of embodied competence, but not yet that of practical embodied intelligence'' \cite{gptastra2026}. Industrial robots are not called embodied intelligence while humanoids are; the difference lies in the threshold on the capacity limb, not on the embodiment limb.
+
+\textit{Fifth, lacking a body does not amount to lacking embodiment.} CAICT's report writes, under physical AI, of systems ``lacking an independent physical body but responsible for managing and optimizing physical infrastructure'' \cite{caict2026}; NVIDIA's embodied AI glossary entry lists ``factories and warehouse facilities'' among embodied AI systems too \cite{nvglossary}. Under our definition, such systems are embodied if they act on physical processes through sensors and actuators; the body is not the criterion, the closed loop is. A Japanese policy document asserts the opposite: physical AI, since it confronts the real world, ``necessarily requires a body'' \cite{japanrobo2026}. Under our definition a body guarantees neither condition: neither the closed loop nor the timing. Consultancy definitions likewise do not limit the concept to single machines: McKinsey divides physical AI systems into those embodied in a single machine and those embedded across multiple devices or infrastructure, their shared defining capability being the use of sensory inputs and learned representations of the surroundings to decide and act in the physical world with minimal human intervention \cite{mckinsey2026}.
+
+\subsection{Derivation: Six Dimensions Reduced to Two Conditions}\label{sec:derivation}
+
+The definition is not an a priori construction; it is obtained from the contrast between software closed loops and physical closed loops (Table~\ref{tab:sixdimensions}).
+
+\begin{table}[htbp]
+\centering
+\caption{Six dimensions of the software closed loop versus the physical closed loop}
+\label{tab:sixdimensions}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{1.9cm}YY>{\centering\arraybackslash}p{1.7cm}}
+\toprule
+Dimension & Software closed loop & Physical closed loop & Condition \\
+\midrule
+Feedback source & interface returns, text, logs & physical measurement---vision, force, proprioception---noisy and delayed & E1 \\
+Action space & discrete tool calls and symbol manipulation & continuous control constrained by dynamics & E1 \\
+Cost of failure & rollback, retry, and isolation are engineering configurations rather than necessities; restoration, where possible, costs at most computation & restoration takes physical cost, and is not always possible & corollary of E1 \\
+Learning signal & textual feedback, success or failure of execution & reward and contact feedback in physical interaction & corollary of E1 \\
+Response deadline & seconds to minutes usually acceptable & prescribed by the physical process & E2 \\
+Environment & rules given by humans, relatively fixed & open, non-stationary, long-tailed & E2 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The six dimensions reduce to two. First, what does the closed loop run through: physical measurement, or symbols and interfaces. Second, who sets the timing: the environment's physical process, or the requester. The first four dimensions unpack the first condition; the last two unpack the second: the response deadline gives the characteristic time directly, and the environment's openness and non-stationarity make that time independent of the system's control. Taking only the first would treat a stepwise-teleoperated robot the same as an end-to-end policy; taking only the second would count a high-frequency trading system as embodied. Only the conjunction gives the definition full discriminative force.
+
+Three possible objections to this definition must be answered first.
+
+\textit{First}, all computation happens on physical hardware; does E1 hold for every system? What E1 demands is not the substrate but the object of the loop: which world's state do the actions change, and does the task outcome turn on physical law or on interpretation? The physical nature of screen pixels does not enter the task outcome; what enters it is the symbols the pixels carry.
+
+\textit{Second}, simulated agents have a body, perception, and action; why are they not embodied? A simulated agent occupies the simulated-environment position described in \textit{World Models}: the environment's state transitions are conditioned on the agent's actions \cite{yu2026wm}, but the environment is computed; it can be paused, reset, and rolled back, and actions have no physical consequences. The Embodied AI literature and simulation benchmarks of the computer-vision community likewise call a virtual body in a simulated environment embodied \cite{savva2019,yang2025embodiedbench,hellstrom2024}. This paper does not judge that usage right or wrong; it points out only that it is not the same predicate as the physical closed loop, and that sim-to-real transfer is precisely the move from the simulated-environment position to the physical closed loop (Section~\ref{sec:worldmodels}).
+
+\textit{Third}, why does latency belong to embodiment rather than being one more dimension of capacity? One objection runs: a robot that acts slowly in a dynamic environment is still embodied, just less capable. Our reason for writing latency into embodiment is the determination of the environment class. Capacity stands relative to an environment class, and which environment class a system is actually coupled to is decided by latency: a system that responds more slowly than the dynamic process forms a closed loop only with the quasi-static component of the environment. Calling it ``embodied relative to a dynamic environment but lacking the capacity'' records an environment class under the system's name that it is not coupled to. Judging by timing, the embodiment limb must declare the environment class, and the capacity limb thereby gains a determinate reference. Placing latency on the capacity limb can express the same distinction, at the price that for every physical system with actuators the embodiment limb can only be judged to hold.
+
+\subsection{Discriminative Force}\label{sec:discrim}
+
+The definition's discriminative force is shown in Table~\ref{tab:boundary}. ``Embodied'' in the table is judged by Definition 1; ``embodied intelligent'' additionally requires the capacity limb of Definition 2.
+
+\begin{table}[htbp]
+\centering
+\caption{Boundary table}
+\label{tab:boundary}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{5.2cm}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{2.2cm}Y}
+\toprule
+System & E1 & E2 & Verdict \\
+\midrule
+Software agent (large model plus tool framework) & does not hold & --- & not embodied \\
+Agent in a simulated environment & does not hold & --- & not embodied; belongs to the simulated-environment position of the world model \\
+``Embodied intelligence large model'' ($S$ = the model itself) & does not hold & --- & models are not embodied; the usage applies a system predicate to a component \\
+Human-in-the-loop system ($S$ = the computing part; a human reads and operates) & does not hold & --- & not embodied; actions and feedback both pass through the human \\
+Humanoid robot teleoperated step by step by a large model & holds & holds for quasi-static, not for dynamic environments & embodied relative to the quasi-static environment \\
+Humanoid robot with human remote takeover (1X's NEO and the like) & holds while autonomous, not while taken over & same & the verdict varies with the mode of operation; during takeover the loop passes through the human \\
+Robot carrying an end-to-end vision--language--action policy & holds & holds & embodied \\
+Pre-programmed industrial robot & holds & holds & embodied; capacity range given by the program \\
+Process controller (temperature control, irrigation, and the like) & holds & holds (large margin) & embodied; large margin \\
+Level-4 autonomous driving & holds & holds & embodied \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Four rows call for remark. The pre-programmed industrial robot and the process controller are embodied by Definition 1: the consequences of their actions are decided by physical law, and their timing is set by the production line or the process. That verdict is deliberate---it shows that ``embodied'' carries no promise of ``intelligent.'' CAICT's 2025 report frames the core of embodied intelligence as building a data-driven intelligent system forming a closed loop, in contrast to open-loop systems that require the injection of human knowledge and experience \cite{caict2025}. Under that formulation the pre-programmed industrial robot is not embodied intelligence; under our definition it is embodied, with the capacity limb given by the program. The two agree on the conjunction's conclusion for different reasons: the report writes the data-driven closed loop as a single condition; this paper splits it into an embodiment limb and a capacity limb. In control engineering such systems are process controllers; the definition of cyber-physical systems already takes the closed-loop integration of computation and physical processes as its object \cite{lee2008}. The row for level-4 autonomous driving agrees with the think-tank text: CAICT's report says of pet robots and level-4 autonomous driving that both ``in essence possess both the embodied and the intelligent attributes at the same time'' \cite{caict2024}. In the end-to-end-policy row, $S$ is the robot as a whole; the policy itself is a component and is not embodied. In the remote-takeover row, $S$ is the robot; 1X's product page states that for complex tasks NEO doesn't know, an Expert from 1X can remotely supervise its actions at scheduled times \cite{onex2026}, and during supervision the closed loop passes through the human, so the verdict is the same as in the human-in-the-loop row.
+
+\subsection{Concept Type}\label{sec:concepttype}
+
+\textit{Four Concepts, Four Types} distinguishes four concept types---intelligence is a capacity concept, human intelligence a sample concept, artificial intelligence an artifact concept, and AGI a reference-frame concept---and prescribes that each type has a different form of completed definition: the capacity concept ends in a measurement with a construct-validity declaration, and the reference-frame concept never ends in a definition, only in the declaration of a reference set \cite{yu2026four}. \textit{World Models} added the functional concept to the table, its completed form being an engineering specification \cite{yu2026wm}. Embodied intelligence belongs to the capacity concept: its completed form of definition is a measurement relative to a declared environment class, not a specification. Its difference from ``intelligence'' lies only in the environment argument---the extension is part of the extension of the intelligence concept, and the intension adds two environmental constraints.
+
+This paper therefore does not list embodied intelligence as a new concept type. \textit{World Models} added a row to the concept table for the functional concept; this paper adds no row, only a qualification on the capacity-concept row: when the environment argument takes a physical environment class, the term is embodied intelligence. The three-layer framework of \textit{Four Concepts, Four Types} continues to apply \cite{yu2026four}: on the ontological layer, embodiment is a relational property of system and environment; on the epistemic layer, the evidence supporting ``the system is embodied relative to the environment'' is the outcome of the four tests (Section~\ref{sec:criteria}); on the methodological layer, the test procedures and the computation of the timing margin. ``What embodied intelligence essentially is'' is thus not a question that can be answered independently: a restricted case has no essence independent of intelligence. What can be answered is two questions: relative to which environment is it embodied, and what can it do over that environment class.
+
+\section{Clarification: Names, Levels, and Slides}\label{sec:clarify}
+
+\subsection{The Naming Competition}\label{sec:naming}
+
+``Embodied intelligence'' is not the field's only name. Table~\ref{tab:names} lists four adjacent names and their principal users.
+
+\begin{table}[htbp]
+\centering
+\caption{Four adjacent names}
+\label{tab:names}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.0cm}YY}
+\toprule
+Name & Principal users & State of definition \\
+\midrule
+Embodied AI / embodied intelligence & the machine-learning and computer-vision communities; CAICT and ITU standards; China's Government Work Reports & English definitions scattered across surveys, glossary entries, and popular science (Table~\ref{tab:englishdefinitions}); ten citable Chinese definition sentences, disagreeing (Table~\ref{tab:chinesedefinitions}) \\
+Physical AI & NVIDIA; robotics companies Figure, Skild AI, and Sanctuary AI; deployers such as BMW; McKinsey, Citi, and CSET; CAICT \cite{nvglossary,figure_f03,bmw2026,mckinsey2026,citi2025,caict2026} & definitions from glossary entries, consultancies, and think tanks; documented as frequently used interchangeably with embodied AI \cite{cset2026} \\
+Spatial intelligence & Fei-Fei Li and World Labs & mainly functional description; its robotics section calls it ``embodied intelligence in action'' \cite{feili2025} \\
+Agentic AI & Gartner \cite{gartner2024} & autonomous planning and action as content; its reference partly overlaps those of the three preceding names \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The change of names is documented continuously in one company's texts. NVIDIA's March 2024 announcement used embodied AI in four places, with physical AI absent \cite{nvidia2024}; by the January 2025 Consumer Electronics Show, its leading term was physical AI \cite{ces2025}. The company's embodied AI glossary entry gives a definition and links to the physical AI entry, which nowhere mentions embodied AI \cite{nvglossary}. CAICT's 2026 report writes that embodied intelligence and physical AI ``are rapidly converging in core connotation, technological base, and objects of action, and are in essence different expressions of the same technological paradigm''; the same page distinguishes their emphases---embodied intelligence stresses ``how intelligence is realized through a body,'' physical AI ``how artificial intelligence enters and acts upon the physical world'' \cite{caict2026}. CSET's policy brief likewise notes that the two terms are ``closely related and frequently used interchangeably,'' treating physical AI as the broader concept \cite{cset2026}. Where the two are to be divided, CSET takes the presence of a physical body; under our definition (Section~\ref{sec:def}) the divide lies not in the body but in the closed loop.
+
+Names are likewise split in the standards bodies. The ITU standard bears the name embodied artificial intelligence, and the definition sentence in Table~\ref{tab:chinesedefinitions} is drawn from its clause 3.2.1 \cite{itu2025}; ISO's robotics vocabulary and its AI concepts-and-terminology standard contain no embodied entry at all \cite{iso2021,isoiec2022}; IEEE has six embodied-intelligence standards under development, the evaluation-methods one approved in 2025 and none yet published \cite{ieee2025}. Beyond governments, the World Economic Forum's white paper is titled physical AI \cite{wef2025}, and an EU funding program places both names in one title \cite{eucordis2025}. The domestic standardization system is explicitly aligned with the international one: the ITU focus group's nine working groups correspond closely to the \textit{Standardization System for Humanoid Robots and Embodied Intelligence (2026 Edition)} \cite{caict2026,std2026}. The only published international definition is the ITU's. The naming competition is not a matter of Chinese versus English, and it has not converged with standardization.
+
+The word ``embodiment'' carries three further uses in the international literature. The first treats embodiment as the robot's body type: cross-embodiment learning merges data from many robots into one model, and one open dataset counts 22 robotic embodiments \cite{oneill2024,black2024,kim2024,nvidiagroot2025}; Sanctuary AI likewise calls its support of diverse hardware configurations ``multi-embodiment'' \cite{sanctuary}. The second makes the coupling of body, brain, and environment the content of embodied intelligence: a survey defines it as a computational approach that designs and understands the intelligent behavior of embodied, situated agents through the tight coupling between agent and environment, mediated by the constraints of the agent's own body, perceptual, and motor systems, and states explicitly that virtual bodies are equally applicable \cite{liu2025csur}. The third denotes agents with virtual bodies in simulated environments: EmbodiedBench evaluates only in simulation \cite{yang2025embodiedbench}; a survey of foundation models in robotics notes that, in work extending the success of LLMs to embodied AI, ``embodied'' typically refers to a virtual embodiment in a world simulator, not a physical robot embodiment \cite{firoozi2025}; and Hellstr\"om et al.\ observe that the practice of letting a simulated virtual robot collect data in a virtual world is called Embodied AI, adding opacity \cite{hellstrom2024}. The English surveys are not of one mind on simulation: another survey calls agents in cyberspace ``disembodied AI'' and those in physical space ``embodied AI'' \cite{liu2024survey}. Each of the three uses has its own literature, and none conflicts with our definition, but they are not interchangeable: E1 and E2 hold only for the relation of system and environment.
+
+Industry does not define the term. RT-2, which calls a class of models vision--language--action models, never uses ``embodied'' in its body text \cite{brohan2023}; surveys of foundation models in robotics give no definition of embodied intelligence either \cite{firoozi2025}; $\pi_0$, OpenVLA, and GR00T N1 use ``embodiment'' only to mean the robot body \cite{black2024,kim2024,nvidiagroot2025}. Robotics companies describe themselves the same way: Figure uses Embodied AI, embodied intelligence, and physical AI across three posts, defining none \cite{figure_helix,figure_seriesc,figure_f03}; Skild AI and Sanctuary AI use physical AI on their sites and not embodied AI \cite{skild,sanctuary}; Physical Intelligence describes its mission as ``bringing general-purpose intelligence to the physical world'' \cite{pi}; AgiBot calls embodied intelligence its ``core technological focus'' \cite{agibot}. Definitions aimed at the public come from glossary entries and popular science \cite{nvglossary,livescience2024}.
+
+The thesis of \textit{World Models} that ``the naming competition rewards claimability, not accuracy'' holds here more strongly \cite{yu2026wm}. What lends ``embodied intelligence'' legitimacy is not only vendors: Government Work Reports, the 15th Five-Year Plan Recommendations, international standards, undergraduate majors, and think-tank reports together make it easier to claim \cite{plan2026,itu2025}. The institutions that flag the risk are of the same kind---the National Development and Reform Commission proposes to ``establish sound entry and exit mechanisms for the embodied intelligence industry'' \cite{ndrc2025}, and BAAI titles one of its 2026 trends ``embodied intelligence welcomes an industry shakeout'' \cite{baai2026}. Across the texts examined here, official documents provide both legitimacy and risk warnings at once, which the term ``world model'' did not see.
+
+\subsection{Four Levels of the Word}\label{sec:levels}
+
+The same word operates at four levels in the discourse, with different criteria at each.
+
+\begin{itemize}
+\item \textbf{The predicate level}: ``this system is embodied.'' Judged by E1 and E2.
+\item \textbf{The system level}: ``embodied intelligence system,'' ``embodied intelligent robot.'' Judged by Definition 2, requiring both limbs to hold.
+\item \textbf{The component level}: ``embodied intelligence large model,'' ``embodied intelligence chip,'' ``embodied intelligence operating system.'' The predicate holds only for the relation of system and environment, not for a component.
+\item \textbf{The industry level}: ``embodied intelligence industry,'' ``embodied intelligence major.'' These are industrial classifications and academic programs; there is no criterion.
+\end{itemize}
+
+Usages at all four levels appear in the same texts. The \textit{Beijing Action Plan for Embodied Intelligence Science, Technology and Industry Cultivation (2025--2027)} uses ``embodied intelligence'' as a modifier for large models, chips, operating systems, robots, and industrial clusters \cite{beijing2025}; Galbot calls a model an ``embodied large model'' \cite{galbot}; and a company case study calls an action model an ``embodied model'' while defining it in the same text as a ``world action model'' \cite{liberai2026}. The component-level usage applies to a system's parts a predicate that holds only for the combination of system and environment---the whole-to-part misattribution of Section~\ref{sec:slides}. The industry-level usage has no criterion to speak of, but its legitimacy is carried over to the predicate level: once the word enters the Government Work Report, ``is $X$ embodied intelligence?'' begins to look like a question with an official answer.
+
+\subsection{Four Illicit Slides}\label{sec:slides}
+
+The three illicit slides in \textit{Four Concepts, Four Types} each have a counterpart in embodied-intelligence discourse \cite{yu2026four}, joined by a fourth specific to it.
+
+\textbf{Operationalism} (measurement passing as definition): demonstrations and benchmark scores pass as capacity, and robot videos become the basis of judgment. Researchers have already criticized this: Chen Boyuan holds that ``the generalization shown in all demos is extremely limited,'' citing his adviser: ``research may be outcome-driven, but it must not be viral-video-driven'' \cite{chenby2024}; the critiques by Brooks and Goldberg appear in Section~\ref{sec:evidence}.
+
+\textbf{The mereological fallacy} (mechanism passing as the location of a capacity): one part of what is in fact a relation is treated as its location. Two forms appear. The first is the body passing as embodiment---to have a body is to be embodied. Think-tank text has already drawn the line: ``embodied intelligence is not identical to humanoid robots'' \cite{caict2024}. The second is the model passing as the system---applying a system-level predicate to a component, the whole-to-part misattribution named in \textit{Four Concepts, Four Types} \cite{yu2026four}; see Section~\ref{sec:levels}.
+
+\textbf{Criterion promotion} (engineering criteria passing as conceptual content): architectural description is used to answer ``what is embodied intelligence.'' Chen Xuedong's summary is ``data is the power, the model is the brain, the hardware is the body'' \cite{chenxd2026}; Agnes AI describes its framework with ``the LLM is the brain, Agnes Sys1 is the cerebellum, Harness is the memory, MHS is the body'' \cite{agnesrepo2026,agnestr2026}; a policy document names its program items ``embodied intelligence `brain' large model'' and ``embodied intelligence `cerebellum' skill model'' \cite{beijing2025}; and a company's statistical definition builds specifications into the name, UBTech's company profile defining ``full-size embodied intelligent robots'' as ``non-remote-controlled, non-toy, brain chip computing power $\ge$ 200T, height $\ge$ 160cm'' \cite{ubtech}. The international counterpart is the dual-system architecture: GR00T N1 calls its vision--language module System 2 and its diffusion-transformer action module System 1 \cite{nvidiagroot2025}. Such descriptions can help explain an implementation; they cannot give a definition. Whether a description constitutes a definition is settled by its discriminative force: brain, cerebellum, body, and memory can be pointed to one by one in a pure software agent as well.
+
+\textbf{Conjunction confusion} (specific to this discourse): the holding of one limb of the conjunction is read as the holding of both. It has two directions---from body to intelligence, and from intelligence to embodiment. Section~\ref{sec:evidence} presents evidence in both directions.
+
+\subsection{A Census of the Definitional Corpus}\label{sec:corpus}
+
+The definition's intellectual sources are two. One is the tradition of intelligence without representation: intelligence arises from the interaction of body and environment, not from symbol manipulation \cite{brooks1991,pfeifer2006}. The other is the embodied-cognition tradition of cognitive science: cognition is body-based, standing against the mind--body division \cite{varela1991,dreyfus1992,newen2018,shapiro2026}. Zhang Bo's critique of disembodied intelligence continues the second tradition directly \cite{zhangbo2025}. The English-side definition sentences one can cite are listed in Table~\ref{tab:englishdefinitions}.
+
+\begin{table}[htbp]
+\centering
+\caption{The English-language definitional corpus (quotations in the original, abridged)}
+\label{tab:englishdefinitions}
+\footnotesize
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.3cm}Y>{\raggedright\arraybackslash}p{2.6cm}}
+\toprule
+Source & Definition sentence & Sentence form \\
+\midrule
+Liu et al.\ (2025) \cite{liu2024survey} & Embodied AI was initially proposed from the Embodied Turing Test by Alan Turing in 1950, which is designed to determine whether agents can display intelligence that is not just limited to solving abstract problems in a virtual environment (cyber space), but that is also capable of navigating the complexity and unpredictability of the physical world & verdict \\
+Feng et al.\ (2025) \cite{feng2025} & Agents that only solve abstract problems in digital world (cyberspace) are generally defined as disembodied AI, while those that also can interact with the physical world are regarded as embodied AI & division by environment; also ``an intelligent system paradigm for achieving Artificial General Intelligence (AGI)'' \\
+Liu, Guo, and Cangelosi (2025) \cite{liu2025csur} & Embodied intelligence is the computational approach to the design and understanding of intelligent behavior in embodied and situated agents through the consideration of the strict coupling between the agent and its environment, mediated by the constraints of the agent's own body, perceptual and motor system, and brain & computational approach \\
+Sun et al.\ (2024) \cite{sun2024} & Embodied Intelligence, which integrates physical interaction capabilities with cognitive computation in real-world scenarios, provides a promising path to achieve Artificial General Intelligence (AGI) & integration of capacities \\
+Wang and Sun (2025) \cite{wangsung2025} & Embodied AGI is a form of Embodied AI that demonstrates human-like interaction capabilities and can successfully perform diverse, open-ended real-world tasks at a human-level proficiency & capacity; does not define embodied AI itself \\
+NVIDIA, embodied AI entry \cite{nvglossary} & Embodied AI refers to the integration of artificial intelligence into physical systems, enabling them to interact with the physical world. These systems can include general-purpose robots, humanoid robots, autonomous vehicles (AVs), and even factories and warehouse facilities & integration \\
+NVIDIA, physical AI entry \cite{nvglossary} & Physical AI enables autonomous machines, such as robots in factories and robotaxis, to perceive, understand, and perform complex actions in the physical world & capacity \\
+CSET (2026) \cite{cset2026} & Physical AI equips autonomous machines with cognitive reasoning and spatial knowledge, enabling them to learn from their interactions and respond in real time & capacity; timing included \\
+Citi Research (2025) \cite{citi2025} & Physical AI is defined as any physical process learning from and applying AI & physical process \\
+McKinsey (2026) \cite{mckinsey2026} & Physical AI systems may be embodied in a single machine or embedded in multiple devices or pieces of infrastructure; all share a defining capability: they use sensory inputs and learned representations of their surroundings to make decisions and take actions in the physical world with minimal human intervention & capacity; human intervention included \\
+Reuters (2026) \cite{reuters2026} & So-called embodied AI---robots able to perceive, decide and act in the physical world & capacity \\
+Live Science (2024) \cite{livescience2024} & Embodied AI typically combines sensors with machine learning to respond to real-world data & sensors plus learning \\
+Fei-Fei Li (2025) \cite{feili2025} & Spatial intelligence represents the frontier beyond language---the capability that links imagination, perception and action & capacity \\
+Duan et al.\ (2022) \cite{duan2022} & Embodied AI is the belief that true intelligence can emerge from the interactions of an agent with its environment & paradigm shift; the site of research is simulation \\
+Savva et al.\ (2019) \cite{savva2019} & A platform for research in embodied artificial intelligence (AI), enabling training of embodied agents (virtual robots) in highly efficient photorealistic 3D simulation & platform; embodiment as virtual body \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The English definition sentences come from four kinds of source: academic surveys, vendor glossary entries, think-tank and consultancy reports, and journalism and popular science. They are quoted in the original, except those of Liu, Guo, and Cangelosi and of CSET, which are the author's renderings.
+
+Table~\ref{tab:chinesedefinitions} lists the ten citable Chinese definition sentences (translated by the author; all Chinese quotations in this paper are translations).
+
+\begin{table}[htbp]
+\centering
+\caption{The Chinese-language definitional corpus (translations by the author)}
+\label{tab:chinesedefinitions}
+\footnotesize
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.3cm}Y>{\raggedright\arraybackslash}p{2.6cm}}
+\toprule
+Source & Definition sentence & Sentence form \\
+\midrule
+Zheng et al.\ (2026) \cite{zheng2026} & Embodied intelligence is an intelligent system that, based on a physical entity, perceives and adaptively interacts with the environment, thereupon understanding problems and producing intelligent behavior; it is one of the key paths to achieving AI development goals & intelligent system; also a path \\
+CCF terminology entry (Lu Cewu, Wang He, 2023) \cite{ccf2023} & Embodied intelligence is an intelligent system that perceives and acts based on a physical body, which, through the interaction of agent and environment, acquires information, understands problems, makes decisions, and carries out actions, thereby producing intelligent behavior and adaptivity & intelligent system; an infobox calls it an ``artificial intelligence research paradigm'' \\
+Zou Debao (2024) \cite{kejiribao2024} & Embodied intelligence is an important branch of artificial intelligence, emphasizing that an agent interacts closely with its physical environment and realizes perception, decision, and action through intelligent entities such as humanoid robots & branch; carrier written as the humanoid robot \\
+CAICT et al.\ (2024) \cite{caict2024} & Embodied intelligence is an intelligent system that interacts with the environment through physical entities such as robots, capable of environmental perception, information cognition, autonomous decision, and action, and able to achieve intelligent growth and behavioral adaptivity from experiential feedback & intelligent system \\
+ITU (2025) \cite{itu2025} & Embodied AI is artificial intelligence integrated into physical systems that interact autonomously with and adapt to the physical world & artificial intelligence \\
+Zhang Bo (2025) \cite{zhangbo2025} & Embodied intelligence holds that human intelligent behavior depends not only on the brain's thinking but also on interaction with the physical environment for learning and decision & thesis \\
+Tan Tieniu (2025) \cite{tantn2025} & Embodied intelligence is both a form of artificial intelligence and the necessary road to its sustainable development & form; also a path \\
+Zhang Weinan and Liu Ting (2025) \cite{zhangwei2025} & Embodied intelligence is a systemic function with a physical carrier, resting on the theories and technologies of artificial intelligence, robotics, mechanical manufacturing and design, and the like & systemic function \\
+Chen Xuedong (2026) \cite{chenxd2026} & Embodied intelligence is an agent with a physical entity, able to form cognition of the environment through perception and interaction, adapt to the environment, and complete corresponding physical tasks & agent \\
+Zhang Feng (2025) \cite{zhangfeng2025} & Embodied intelligence is an artificial intelligence system possessing a physical body, which, through physical entities interacting with the physical world, achieves intelligent improvement and autonomous behavior & AI system \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Yao Qizhi gave no single-sentence definition; as reported, his framework thesis is ``to move from imitation to reasoning'' and ``reasoning, planning, and control should in future be placed within one closed-loop framework'' \cite{yao2025}. Zhang Weinan and Liu Ting note, before giving their own definition, that ``there is not yet a generally accepted definition'' \cite{zhangwei2025}. The ten definition sentences are not ten independent positions: the definition of Zhang Weinan and Liu Ting is marked in their text as quoted from the CCF terminology entry \cite{zhangwei2025,ccf2023}. Three records call for remark on their nature: Chen Xuedong's sentence comes from a journalist's indirect quotation, Zhang Feng's from a transcript not reviewed by the speaker, and Tan Tieniu's from a write-up of a speech not confirmed by the speaker \cite{chenxd2026,zhangfeng2025,tantn2025}. Beyond Table~\ref{tab:chinesedefinitions}, the same institution gives different definitions in different years: CAICT called it an intelligent system in 2024, made the ``intelligent closed loop'' the core in 2025, and called it artificial intelligence ``with a body'' in 2026 \cite{caict2024,caict2025,caict2026}. The instability of definition is not only across institutions.
+
+The four axes of disagreement named in the introduction each have a position in the Chinese corpus.
+
+The carrier-scope disagreement arises from the environment class and task range left undeclared. Some definition sentences write the carrier directly as the humanoid robot---``realize perception, decision, and action through intelligent entities such as humanoid robots'' \cite{kejiribao2024}; think-tank text stresses arbitrary physical entities, and CAICT's report states explicitly that embodied intelligence is not identical to humanoid robots and counts level-4 autonomous driving as well \cite{caict2024}. Under our framework both statements can hold; the difference is the default environment class and task range.
+
+The superordinate-concept disagreement arises from the word's level being written into the definition. In one and the same conference report, embodied intelligence is both ``an important branch of artificial intelligence'' and ``a new frontier of interdisciplinary research'' \cite{ia2025}: the former speaks on the predicate and system levels, the latter of academic programs, while ``future industry'' speaks on the industry level \cite{govreport2025}.
+
+The sentence-form disagreement corresponds to the four levels plus a route. ``Intelligent system'' and ``agent'' are system-level; ``systemic function'' is predicate-level; ``artificial intelligence research paradigm'' and ``necessary road'' are routes.
+
+The intelligence-source disagreement lies in which limb of the conjunction is made definitional. Zhang Bo stresses that intelligence arises in interaction: ``human intelligent behavior depends not only on the brain's thinking but also on interaction with the physical environment for learning and decision, and finally, through perception, feeds the results of execution back to the brain, forming a closed loop'' \cite{zhangbo2025}. Chen Xuedong's definition takes the physical entity as carrier---``an agent with a physical entity, able to form cognition of the environment through perception and interaction'' \cite{chenxd2026}---and the sentence ``data is the power, the model is the brain, the hardware is the body'' is read here as intelligence brought by the model and execution borne by the hardware \cite{chenxd2026}. The first ties the source of intelligence to embodiment; the second treats embodiment as the carrier of intelligence. Our definition stays neutral on this disagreement: the two conditions judge only embodiment, not where intelligence comes from.
+
+The conjunctive structure has precedents in existing texts. CAICT says of pet robots and level-4 autonomous driving that both ``in essence possess both the embodied and the intelligent attributes at the same time,'' and delimits the intension with the three elements ``body + environment + intelligence'' \cite{caict2024}; Zhang Weinan and Liu Ting's definition places the physical carrier and the systemic function side by side \cite{zhangwei2025}; and Sun et al.\ characterize embodied intelligence as integrating ``physical interaction capabilities with cognitive computation'' \cite{sun2024}. This paper writes those precedents as a definition.
+
+Set against the Chinese corpus, the English one agrees in three places and differs in two.
+
+The three agreements concern, first, carrier scope: the vendor entry counts factories and warehouse facilities as embodied AI systems, the consultancy allows physical AI to be embedded in infrastructure \cite{nvglossary,mckinsey2026}, the think tank divides the two terms by the presence of a physical body \cite{cset2026}, and the coupling-tradition survey includes virtual bodies \cite{liu2025csur}. Second, the superordinate concept: the same object is called ``an intelligent system paradigm'' \cite{feng2025}, ``a computational approach'' \cite{liu2025csur}, and ``a promising path to achieve Artificial General Intelligence (AGI)'' \cite{sun2024}. Third, the source of intelligence: the coupling tradition ties the origin of intelligence to the agent--environment coupling, the integration tradition to the implanting of AI into physical systems \cite{nvglossary}.
+
+The two differences are these. First, English surveys tend to define by dividing the environment: agents that only solve abstract problems in the digital world are disembodied AI; those that also interact with the physical world are embodied AI \cite{feng2025,liu2024survey}. Such a definition writes only the embodiment limb of the conjunction and omits the capacity limb entirely. Second, the timing condition appears only in the think tank's definition \cite{cset2026}; no academic survey's definition sentence touches on real-time behavior, and only one consultancy writes the reduction of human intervention into the definition \cite{mckinsey2026}. The gap in criteria exists in the English literature as well.
+
+The definitional gap is now being filled, in a direction other than this paper's. In April 2026 an editorial in \textit{Nature Machine Intelligence} wrote that several frameworks from different disciplines are converging on the scientific question of what it takes for a system to not just predict, simulate, or reason about the world, but to act physically and intelligently within it \cite{nmi2026}. In October of the same year, a twelve-chapter physical AI monograph gave a definition (Definition 1.1): ``Physical AI is the capacity of an artificial system to perceive physical environment states, maintain task-relevant representations of physical relationships and action consequences, and select and execute interventions through physical interfaces, using feedback to achieve objectives under physical, operational, and computational constraints.'' The same chapter distinguishes it from embodied AI: ``Embodied AI emphasizes how an agent's body shapes sensing and action. Physical AI emphasizes closed-loop intervention in real physical processes.'' \cite{monograph2026}. Two single-sentence characterizations from the same period: embodied artificial intelligence is an intelligent system formed by agents and their environment through active perception, embodied cognition, and action interaction \cite{tong2026}, and embodied AI is a unique form of artificial intelligence that actively interacts with the physical environment \cite{ma2026}. These definitions and characterizations are predominantly single-predicate---interaction, the closed loop, or coupling---and none writes embodiment and intelligence as the conjunction of two independent predicates or declares the environment class. A paper-by-paper examination of recent papers whose titles contain ``embodied intelligence'' or ``physical AI,'' together with explicit definitional searches, has yet to turn up a definition isomorphic to this paper's.
+
+\section{Criteria: Four Tests}\label{sec:criteria}
+
+The definition gives conditions; the criteria give procedures. The four tests follow from the two conditions, each with an operation, a reading, and a limit. The elements of the four tests each have antecedents in the literature (Section~\ref{sec:relations}); this paper derives them from the two conditions and writes them as executable procedures. Evaluation procedures are being drafted at the international level as well: IEEE's standard for evaluation methods for the capabilities of embodied intelligence has not yet been published \cite{ieee2025}.
+
+\subsection{The Closed-Loop Test (E1)}\label{sec:closedloop}
+
+The operation has three steps. Cut the execution pathway: lock the actuators. Disturb a physical quantity: change task-relevant friction, mass, or lighting while keeping the symbolic record unchanged. Cut the feedback: occlude the sensors.
+
+Reading: if the task is still judged complete with the actuators locked, the outcome is decided by symbols and E1 does not hold. If the task outcome changes with the physical disturbance and the change is traceable to the disturbed quantity, the consequence clause of E1 holds. If the system's action sequence is unchanged with the sensors occluded, the feedback does not come from physical measurement and E1 does not hold.
+
+Limit: this test examines whether the execution and feedback pathways run through the physical world, not whether the system's responses are timely; the pause test supplies the latter.
+
+\subsection{The Body-Swap Test (E1, Body Side)}\label{sec:swap}
+
+Operation: keep the instructions fixed and change the body's physical parameters---mass distribution, friction characteristics, or transmission latency---and compare the execution outcomes.
+
+Reading: if the same instructions yield different execution outcomes for different body parameters, the consequences of action are decided by physical law, and E1 holds on the body side. If neither the interpretation of the instructions nor the execution outcomes change with the body, the body is peripheral equipment and the closed loop runs through the semantics of the instructions.
+
+Remark: one may alternatively keep the policy and swap the body, comparing task success rates. A drop in the success rate shows that capacity depends on this body, which is a property of the capacity limb and does not enter E1's verdict; nor does it show how much computation the body carries out, which belongs to the implementation layer.
+
+\subsection{The Rollback Test (a Corollary of E1)}\label{sec:rollback}
+
+Operation: let one action fail and examine whether the environment can be restored to the state before the action.
+
+Reading: if restoration requires physical cost---time, workpieces, or equipment loss---the irreversible side of the physical closed loop holds. If restoration needs only a command, the loop is in the digital environment or in simulation.
+
+Remark: simulation can be rolled back, so simulation is not a physical closed loop. This test is the testing form of the conclusion in Section~\ref{sec:derivation}.
+
+\subsection{The Pause Test (E2)}\label{sec:pause}
+
+Operation: insert an artificial latency $T$ into the system's decision step, measure how the task success rate varies with $T$, and record the inserted amount at which the rate begins to drop as $T^{*}$.
+
+Reading: the environment's characteristic time for the task is estimated as the sum of the system's original response latency and $T^{*}$. The ratio of the environment's characteristic time to the system's response latency is the \textbf{timing margin}. A margin above one: the system is embodied relative to that environment. A margin below one: the system responds more slowly than the environment's process, and the system is not embodied relative to that environment.
+
+Remark: the margin is a continuous quantity, and ``weak embodiment'' thereby gains a quantitative reading. Hoffmann and Patni judge current machine-learning robots to be ``only weakly embodied'' \cite{hoffmann2025}. Under our framework that judgment can be read as the margin's approaching one: embodied relative to quasi-static environments, not embodied relative to dynamic ones. That is one reading offered by this paper, not a paraphrase of the original authors. Real-time behavior also appears in a think tank's definition: CSET defines physical AI as equipping autonomous machines with cognitive reasoning and spatial knowledge, enabling them to learn from their interactions and respond in real time \cite{cset2026}. A corporate text writes control frequency into its system description: Figure's Helix runs its System 1 as a separate real-time process, maintaining the 200 Hz control loop required for smooth upper-body action \cite{figure_helix}.
+
+\subsection{Relations to Existing Criteria}\label{sec:relations}
+
+E1 and E2 each have antecedents in control engineering. Cyber-physical systems are defined as integrations of computation and physical processes, in which physical processes affect computation and computation monitors and controls the physical processes, usually with feedback loops \cite{lee2008}; that is the engineering statement of E1. The classical definition of a real-time system is that its correctness depends not only on the logical result of the computation but also on the time at which the results are produced \cite{stankovic1988}; that is the engineering statement of E2. Both definitions concern a system's reliability and do not involve capacity: deciding the embodiment limb separately from the capacity limb has precedent in engineering.
+
+Zador et al.\ propose the ``embodied Turing test,'' a behavioral criterion: an AI animal model---robotic or in simulation---passes if its behavior is indistinguishable from that of its living counterpart \cite{zador2023}. That simulated models are included shows it judges the capacity limb, not the embodiment limb.
+
+The two traditions of the implementation layer each have their own measure. The morphological-computation tradition \cite{muller2017} measures ``morphological intelligence'' by a morphology's ability to facilitate the learning of novel tasks \cite{gupta2021}, and the body--brain--environment coupling tradition takes the synergy of the three as the content of embodied intelligence \cite{liu2025csur,pfeifer2007}. Both say how intelligence is obtained (Section~\ref{sec:derivation}); our definition requires neither.
+
+Hoffmann and Patni's criterion is a six-item checklist. The first item is that behavior lies not in the brain or controller but in the closed-loop interaction of controller, body, and environment; the remaining five are properties such as body morphology facilitating control and sensor morphology facilitating perception. The judgment of being ``only weakly embodied,'' cited in Section~\ref{sec:pause}, is made on that basis \cite{hoffmann2025}. The first item agrees with E1; the remaining five belong, under our definition, to the implementation layer. The checklist's items are not on one layer, which is why the two definitions yield different verdicts.
+
+Hellstr\"om et al.\ give two degree axes: the degree of body, the proportion of aspects of the environment the agent can sense and affect; and the degree of intertwining, the proportion of aspects the agent senses and affects in a way in which sensing, thinking, and acting depend on each other. An agent that senses and acts in the physical world is physically embodied; one that senses and acts in a virtual world is virtually embodied; an agent without a body that affects the world through humans is ``embodiment by proxy'' \cite{hellstrom2024}. Both degree axes and our timing margin are continuous quantities with different objects: the first two measure the agent's coverage of, and dependence on, the environment, while the margin measures the temporal relation of system and environment. ``Embodiment by proxy'' and virtual embodiment both fail E1.
+
+The Embodied Web Agents paper juxtaposes two kinds of agent: one retrieves and reasons over vast amounts of digital information obtained online, the other interacts with the physical world through embodied perception, planning, and action, and few combine the two \cite{ewa2025}. E1 and the closed-loop test give a condition and a procedure for that division.
+
+Paolo et al.'s position paper characterizes embodied AI by four ingredients---perception, action, memory, and learning---and argues it is ``the next fundamental step in the pursuit of Artificial General Intelligence (AGI)''; the fully embodied agent in their text must grasp the causality underlying events and actions within its environment, ``be it digital or physical'' \cite{paolo2024}. The four ingredients hold of software agents as well, and the environment is stated to include the digital, so this characterization has no discriminative force for embodiment.
+
+Wang and Sun define only embodied AGI---embodied AI that demonstrates human-like interaction capabilities and can successfully perform diverse, open-ended real-world tasks at a human-level proficiency---and divide it into five levels \cite{wangsung2025}. What is graded is the capacity limb, which has nothing to do with the verdict on the embodiment limb.
+
+\section{Distinctions}\label{sec:distinction}
+
+\subsection{From Intelligence}\label{sec:fromintelligence}
+
+Embodied intelligence is a conjunction, and the two limbs do not imply each other. A pre-programmed industrial robot is embodied relative to the production line, with its capacity range given by the program; a process controller is embodied, its capacity range the range of its control law. A large model has intelligence relative to a digital environment; it has no physical closed loop and is embodied relative to no physical environment. In the former case the embodiment limb holds and the capacity limb is narrow; in the latter the capacity limb holds and the embodiment limb does not. The two limbs being independent, judging whether a system has embodied intelligence requires the evidence for each to be submitted separately.
+
+\subsection{From the Machine Mind}\label{sec:machinemind}
+
+\textit{Two Different Goals} dissociates the machine mind from artificial intelligence \cite{yu2026two}; the article ``Does the Machine Heart Need a Body?'' argues that embodiment is not a necessary requirement of the machine mind---what the machine mind needs is a closed loop of practice, and the body is one implementation of that loop \cite{yu2026blog}. That argument does not conflict with our definition, because the two predicates take different values of the environment argument. The machine mind requires the environment to include social practice, digital or physical; embodied intelligence requires the environment to be the physical world.
+
+Two non-implications follow in both directions. An industrial robot is embodied and has no machine mind; a system that runs only in a digital environment can, by the standard of \textit{Two Different Goals}, have a machine mind without being embodied.
+
+Beaulieu and Kriegman's argument addresses a different relation of ``embodied.'' They hold that computer programs strictly incapable of moving through physical space might, under the right conditions, be more embodied than a robot that walks and talks; that embodiment cannot be the trivial fact of a body, nor its movement through space, but ``the perpetual negotiation of the function, design, and integrity of that body---that is, to participate in what it means to constitute a given body'' \cite{beaulieu2023}. Their criterion concerns the relation of a system to its own constitution; our E1 and E2 concern the relation of a system to its environment. The two predicates have different objects and do not compete.
+
+\subsection{From the World Model}\label{sec:worldmodels}
+
+\textit{World Models} determines that the world model is a functional concept that can be located at four positions \cite{yu2026wm}. In an embodied system the world model is a component used to roll out the environment's changes internally and to plan action. The two concepts do not imply each other: a world model can exist detached from embodied systems, the simulated-environment position being one example; and an embodied system can contain no world model, the pre-programmed industrial robot being one. A system with nothing but a world model and no action or physical feedback fails E1.
+
+The sim-to-real problem of training sits at the boundary of the two concepts. Training completes at the simulated-environment position; deployment must change over to the physical closed loop, and the two conditions are re-judged at the changeover. Whether behavior in simulation predicts behavior in reality varies with the task \cite{kadian2020,chebotar2019}; the gap between before and after the changeover is the difference between the simulated environment and the physical closed loop.
+
+\subsection{From Artificial General Intelligence}\label{sec:fromagi}
+
+AGI is a reference-frame concept, and its judgment rests on the declaration of a reference set \cite{yu2026four}. Binding embodied intelligence to AGI is a common kind of claim. A survey calls embodied intelligence ``crucial for achieving Artificial General Intelligence (AGI)'' \cite{liu2024survey}, another calls it ``an intelligent system paradigm for achieving Artificial General Intelligence (AGI)'' \cite{feng2025}; the CCF terminology entry states that ``the lack of physical interaction capability has become the bottleneck on the road to AGI'' \cite{ccf2023}; and Zhang Bo holds that embodied intelligence will move artificial intelligence ``toward AGI'' \cite{zhangbo2025}. These claims compress into one: embodied intelligence is the necessary road to AGI. Its plainest form appears in domestic reporting: ``embodied intelligence is the necessary road to AGI, and only humanoid robots can realize AGI'' \cite{jiemian2024}.
+
+The claim has two readings. As a capacity claim it can hold: if the reference set includes physical practice, AGI must have capacity in physical practice. As a route claim---AGI must itself have a body---it is not a conceptual inference. Capacity can be obtained by directing embodied systems, as humans act on the physical world through tools and other people. Claimants must argue separately that ``the capacity must be realized by the system's own closed loop.''
+
+On criteria: the criterion of embodiment is local---the four tests and the timing margin; the judgment of AGI is total---the declaration of the reference set. The progress-transfer illusion \cite{yu2026two} takes this form on that axis: demonstrations, financing rounds, and listings are recorded as AGI milestones. Progress on a local metric is non-transferable because the two sets of criteria are incommensurable.
+
+\section{Evidence: Both Limbs, Separately}\label{sec:evidence}
+
+\subsection{Embodied, but the Capacity Insufficient}\label{sec:capacity}
+
+CAICT's 2026 report gives one set of figures: ``monthly operation of fewer than 10 days is not uncommon''; and ``most domestic enterprises remain concentrated on replicating and fine-tuning earlier open models such as $\pi_0$, $\pi_{0.5}$, and OpenVLA, whose base models lag about two generations behind the frontier closed models'' \cite{caict2026}. The previous year's report states that ``whether physical intelligence emerges in the mainstream architecture represented by end-to-end vision--language--action (VLA) models is uncertain'' \cite{caict2025}. International data institutions and the press record the same: IDC reports that over 85 percent of deployments concentrate in performance, education, data collection, and guided-tour scenarios \cite{idc2026}; Reuters quotes industry insiders saying the humanoids ``lack the intelligence needed for general-purpose work'' and that much of what one sees is ``dancing disguised as working'' \cite{reuters2026}. One eleven-month deployment in a BMW plant lists per-shift success rate and intervention counts as targets, not results \cite{figure_bmw}. Goldman Sachs's 2022 judgment reads as the separation of the two limbs: some humanoid robots had mastered mobility and agility, others could handle cognitive and intellectual challenges, and ``none can do both'' \cite{goldman2022}.
+
+These systems close their loops in real environments, their timing set by the environment, and E1 and E2 hold. What is insufficient is the capacity limb: low utilization shows that these systems do not yet sustain use in their target environment class. Under the conjunction confusion of Section~\ref{sec:slides}, the holding of E1 and E2 is read as the holding of both limbs, and such systems come to be called ``embodied intelligence'' wholesale.
+
+\subsection{Capable, but Not Embodied}\label{sec:notembodied}
+
+One case is Galbot's ``embodied large model,'' cited in Section~\ref{sec:levels} \cite{galbot}; Figure calls Helix ``our AI system for embodied intelligence'' \cite{figure_seriesc}. EmbodiedBench evaluates multimodal large language models directly as embodied agents, with tasks completed in simulated environments \cite{yang2025embodiedbench}.
+
+In these usages the capacity limb has more or less evidence, while the embodiment limb fails E1.
+
+\subsection{One System, Two Verdicts}\label{sec:agnes}
+
+Agnes AI's technical report gives 100 tasks on a self-built benchmark: 40 desktop software tasks and 60 multi-site physical operations including machine-tool control, assembly, intralogistics, patrol inspection, and water, power, and cold-chain control \cite{agnestr2026}. Under our definition the same system receives two verdicts across these 100 tasks. The 40 desktop tasks: the loop runs through software and the system is not embodied. The 60 physical operations: the loop runs through machine tools, assembly, and logistics equipment, and the system is embodied relative to those environments. The report sums the two parts into one overall success rate. That summation is itself an instance of conjunction confusion: the holding of the physical half is credited to the system as a whole. The benchmark and the scores are both self-evaluated; this paper uses them only as an example of the method of judgment, not as evidence of capacity.
+
+\subsection{Where the Critiques Fall}\label{sec:critiques}
+
+The critiques of current humanoid robots mostly fall on the capacity limb. Brooks identifies the bet made by Figure and Tesla: that learning from large quantities of video of human hand motions suffices for a robot to learn dexterity; his own judgment is that ``collecting just visual data is not collecting the right data,'' and that teaching dexterity to a machine without understanding the components of touch, without being able to measure touch sensations, and without being able to store and replay it ``is probably dumb. And an expensive mistake.'' \cite{brooks2025}. Goldberg calls the current publicity hype because it runs ``so far ahead of the robotic capabilities that researchers in the field are familiar with''; he and his colleagues are ``just trying to reset expectations'' so as not to create a bubble that could lead to a backlash \cite{goldberg2025}. CAICT expects that ``the contradiction between industrial heat and the absence of deployed applications may trigger a new round of bubble'' \cite{caict2025}. A May 2026 Bloomberg article is titled ``Humanoid Robots Are the Next Phase of the AI Hype Cycle'' \cite{bloomberg2026}. And \textit{MIT Technology Review}'s investigation falls on the other limb: behind humanoid-robot demos and home products, teleoperation often goes undisclosed, with the risk of ``mistaking concealed human labor for machine intelligence'' \cite{mittr2026}. These critiques target learning signals, generalization, and expectation management, all on the capacity limb; they do not deny the holding of the embodiment limb. The one on undisclosed teleoperation, under the human-in-the-loop row of Table~\ref{tab:boundary}, requires even the verdict on the embodiment limb to be remade according to the mode of operation.
+
+Critiques that fall on the embodiment limb also exist. Hoffmann and Patni press whether current machine-learning robots are embodied at all, judging them only weakly embodied \cite{hoffmann2025}. The two kinds of critique correspond to the two predicates and cannot substitute for each other: the first does not constitute a doubt about embodiment, the second not an evaluation of capacity. The two limbs are judged separately, each in its place.
+
+\section{Falsifiability Clauses, the Admission Protocol, and the Survival Clause}\label{sec:falsifiable}
+
+\subsection{Falsifiability Clauses}\label{sec:falsify}
+
+The claims of this paper are written in a form that experience can refute.
+
+\begin{enumerate}
+\item \textbf{The sufficiency of E1}: if engineering and the academy converge on judging pre-programmed systems without environmental feedback to be not embodied, on the ground that the coupling of perception and action is lacking rather than that capacity is insufficient, then E1 must be supplemented with a feedback condition, and the verdicts of Table~\ref{tab:boundary} on the pre-programmed industrial robot and the process controller are void.
+\item \textbf{The timing condition}: if the characteristic time of physical environments proves irrelevant to the verdict on embodiment---if adding decision latency of arbitrary length changes the success or failure of physical tasks not at all---E2 is void.
+\item \textbf{The conjunctive structure}: if ``embodied'' and ``intelligent'' prove not to be conceptually independent of each other---if whatever is embodied must be intelligent or whatever is intelligent must be embodied---the diagnosis of conjunction confusion is void.
+\item \textbf{The four tests}: if the tests systematically contradict engineering practice on known systems---judging an end-to-end policy not embodied while judging a software agent embodied---the tests are void; the definition is retained and the procedures rewritten.
+\item \textbf{The type claim}: if the field converges on a structural definition---defining embodied intelligence by model architecture or the quantity of morphological computation---with discriminative force no less than ours, the thesis of ``the restricted case of the capacity concept'' is weakened.
+\item \textbf{Predicate attribution to components}: if a strict definition and criteria appear under which ``embodied'' can legitimately be attributed to a model or a part, the revision condition that \textit{Four Concepts, Four Types} reserves for ``component-level capacity'' takes effect here \cite{yu2026four}, and the diagnosis of ``the model passing as the system'' is void.
+\item \textbf{Transfer}: if some internal indicator of embodied intelligence proves isomorphic to the total judgment of AGI, the distinction of Section~\ref{sec:fromagi} is void.
+\end{enumerate}
+
+\subsection{The Admission Protocol}\label{sec:admission}
+
+A new case is located by three questions, without modifying the definition.
+
+\textit{First, does the closed loop run through the physical world?} Apply the closed-loop test and the body-swap test. What fails is classified as a software agent or a simulated agent, or is merely a name.
+
+\textit{Second, who sets the timing?} Apply the pause test, compute the timing margin, and declare the environment class relative to which the system is embodied.
+
+\textit{Third, has the evidence for the two limbs been submitted separately?} The embodiment limb is judged by the four tests, the capacity limb by the capacity range. Submitting only one limb while calling the system ``embodied intelligence'' is conjunction confusion.
+
+After the three questions, the level at which the word operates is examined (Section~\ref{sec:levels}): the holding of the embodiment limb licenses only the predicate-level ``embodied''; the holding of both limbs licenses the system-level ``embodied intelligence''; the component-level usage is merely a name.
+
+Three cases demonstrate the protocol. Agnes Harness receives two different verdicts on software tasks and physical operations (Section~\ref{sec:agnes}). The large-model-teleoperated humanoid passes the first question and receives the qualification ``embodied relative to the quasi-static environment'' at the second. The ``embodied intelligence large model'' fails the first question; its name belongs to the component level. None of the three cases altered any clause of the definition.
+
+A case that the three questions cannot locate is a counterexample to this paper: it triggers the falsifiability clauses and marks the entry point of the next revision.
+
+\subsection{The Survival Clause}\label{sec:survival}
+
+The definition is bound to the predicate, not to the word. If ``embodied intelligence'' completes a semantic drift and consolidates as an industry name or a component name, the conditions for judging the two limbs do not drift with the word: any workable embodied system, at runtime, has its closed loop passing through the physical world and its timing set by the environment. Should that day come, the predicate can retreat to existing scientific names---physical closed-loop control, the cyber-physical system \cite{lee2008}---and the analysis of this paper migrates with the predicate.
+
+\section{Closing}\label{sec:closing}
+
+The tools of this paper come from the human-referential fitting theory: the conceptual typology and the three illicit slides from \textit{Four Concepts, Four Types} \cite{yu2026four}; the definitional method, the positional analysis, and the naming-competition thesis from \textit{World Models: Definition, Clarification, Distinction, and Boundaries} \cite{yu2026wm}; and the progress-transfer illusion from \textit{Two Different Goals} \cite{yu2026two}. Embodied intelligence's position in that framework is definite: it is the capacity concept restricted to physical environment classes, one word conjoining two independent predicates. The confusion lies not in the technology the word denotes but in the conjunction---evidence for one limb is read as evidence for both. Declare the environment class, submit the evidence for the two limbs separately, and ``embodied intelligence'' turns from a freely claimable name into a decidable predicate.
+
+\begin{thebibliography}{110}\small
+
+\bibitem{govreport2025}
+State Council of the People's Republic of China. Government Work Report (2025). 2025-03-05. \url{https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm}
+
+\bibitem{govreport2026}
+State Council of the People's Republic of China. Government Work Report (2026). 2026-03-05. \url{https://www.gov.cn/yaowen/liebiao/202603/content_7062625.htm}
+
+\bibitem{itu2025}
+ITU-T. F.748.66 (12/2025): Requirements and Framework for Embodied Artificial Intelligence Systems. Approved 2025-12-14.
+
+\bibitem{caict2026}
+China Academy of Information and Communications Technology (AI Research Institute), Tsinghua University Department of Electronic Engineering, Embodied Intelligence Test Laboratory. Embodied Intelligence Development Report (2026)（具身智能发展报告（2026 年））. 2026-10. \url{https://www.caict.ac.cn/kxyj/qwfb/ztbg/202610/P020261024380797577424.pdf}
+
+\bibitem{yicai2025}
+Lin, Jing. Eight Double First-Class Universities Unusually Lay Out ``Embodied Intelligence'' Majors. Yicai, 2025-11-14. \url{https://www.yicai.com/news/102912814.html}
+
+\bibitem{japan2026}
+Cabinet Office of Japan. Artificial Intelligence Basic Plan（人工知能基本計画）. Cabinet decision, 2025-12-23. \url{https://www8.cao.go.jp/cstp/ai/ai_plan/aiplan_20251223.pdf}
+
+\bibitem{korea2026}
+Ministry of Science and ICT, Republic of Korea（{\hangulfont 과학기술정보통신부}）. Strategy for Securing Core Competitiveness in Physical AI（{\hangulfont 물리적 인공지능(피지컬 AI) 핵심 경쟁력 확보 전략}）. 2026-07-01.
+
+\bibitem{eu2025}
+European Commission. Apply AI Strategy. COM(2025) 723 final, 2025-10-08.
+
+\bibitem{uk2025}
+UK Robotics Growth Partnership. Smart Machines Strategy 2035. 2025-02-11.
+
+\bibitem{aiaap2025}
+The White House. America's AI Action Plan. 2025-07. \url{https://www.whitehouse.gov/wp-content/uploads/2025/07/Americas-AI-Action-Plan.pdf}
+
+\bibitem{ces2025}
+Caulfield, B. CES 2025: AI Advancing at ``Incredible Pace,'' NVIDIA CEO Says. NVIDIA Blog, 2025-01-06. \url{https://blogs.nvidia.com/blog/ces-2025-jensen-huang/}
+
+\bibitem{figure_f03}
+Figure AI. F.03 at BMW. 2026-06-30. \url{https://www.figure.ai/news/f-03-at-bmw}
+
+\bibitem{morganstanley2025}
+Morgan Stanley. Humanoids: A \$5 Trillion Market. 2025-05-14. \url{https://www.morganstanley.com/insights/articles/humanoid-robot-market-5-trillion-by-2050}
+
+\bibitem{idc2026}
+IDC. Humanoid Robotics Commercialization Trends 2026. 2026-04-23. \url{https://www.idc.com/resource-center/blog/humanoid-robotics-commercialization-2026/}
+
+\bibitem{reuters2026}
+Chen, L., Baptista, E., Park, J. China Can Build Kung Fu-Fighting Robots. But It Can't Get Them to Do Factory Work. Reuters Investigations, 2026-08-27. \url{https://www.reuters.com/investigations/chinas-humanoid-robots-arent-smart-enough-take-your-job-yet-2026-08-27/}
+
+\bibitem{cset2026}
+VerWey, J. Physical AI: A Primer for Policymakers on AI-Robotics Convergence. Center for Security and Emerging Technology, 2026. DOI: 10.51593/20250023.
+
+\bibitem{nvidia2024}
+NVIDIA. NVIDIA Announces Project GR00T Foundation Model for Humanoid Robots and Major Isaac Robotics Platform Update. 2024-03-18. \url{https://nvidianews.nvidia.com/news/foundation-model-isaac-robotics-platform}
+
+\bibitem{nvglossary}
+NVIDIA. What is Embodied AI?; What is Physical AI? NVIDIA Glossary. \url{https://www.nvidia.com/en-us/glossary/embodied-ai/}; \url{https://www.nvidia.com/en-us/glossary/generative-physical-ai/}
+
+\bibitem{guofa2025}
+State Council of the People's Republic of China. Opinion on Deepening the Implementation of the ``AI+'' Action（国发〔2025〕11 号）. 2025-08-26. \url{https://www.gov.cn/zhengce/zhengceku/202508/content_7037862.htm}
+
+\bibitem{yu2026four}
+Yugui Yu. Four Concepts, Four Types: Levels, Boundaries, and a Translation Protocol for Intelligence, Human Intelligence, Artificial Intelligence, and AGI（四个概念，四种类型）. Zenodo: 10.5281/zenodo.24096361, 2026.
+
+\bibitem{yu2026wm}
+Yugui Yu. World Models: Definition, Clarification, Distinction, and Boundaries（世界模型：定义、澄清、区别与边界）. Zenodo: 10.5281/zenodo.24384106, 2026.
+
+\bibitem{zheng2026}
+Zheng, N., Yang, M., Jiang, W., Sun, H., Ding, N. Development Trends and Prospects of Embodied Intelligence. Strategic Study of CAE（中国工程科学）, 2026, 28(2): 1–13. DOI: 10.15302/J-SSCAE-2025.07.019.
+
+\bibitem{pfeifer2006}
+Pfeifer, R., Bongard, J. How the Body Shapes the Way We Think: A New View of Intelligence. MIT Press, 2006.
+
+\bibitem{muller2017}
+Müller, V. C., Hoffmann, M. What Is Morphological Computation? On How the Body Contributes to Cognition and Control. Artificial Life, 23(1): 1–24, 2017. DOI: 10.1162/artl\_a\_00219.
+
+\bibitem{liu2025csur}
+Liu, H., Guo, D., Cangelosi, A. Embodied Intelligence: A Synergy of Morphology, Action, Perception and Learning. ACM Computing Surveys, 57(7): Article 186, 2025. DOI: 10.1145/3717059.
+
+\bibitem{gptastra2026}
+SenseNova Joint Research Team. Has GPT-6-Astra Achieved Embodied Intelligence? arXiv:2610.22471, 2026.
+
+\bibitem{japanrobo2026}
+Inter-Ministerial Meeting on AI Robotics. AI Robotics Strategy（{\jafont ＡＩロボティクス戦略}）. 2026-03-26. \url{https://www.cas.go.jp/jp/seisaku/ai_robo/dai3/shiryo1.pdf}
+
+\bibitem{mckinsey2026}
+Kelkar, A., Heid, B., Jansen, C., Patel, M., Houdou, M., Rotman, P. Physical AI Could Shift Where Market Value Accrues. McKinsey \& Company, 2026-11-20. \url{https://www.mckinsey.com/industries/industrials/our-insights/physical-ai-is-breaking-out-of-the-box}
+
+\bibitem{savva2019}
+Savva, M., Kadian, A., Maksymets, O., et al. Habitat: A Platform for Embodied AI Research. ICCV 2019. arXiv:1904.01201.
+
+\bibitem{yang2025embodiedbench}
+Yang, R., Chen, H., Zhang, J., et al. EmbodiedBench: Comprehensive Benchmarking Multi-modal Large Language Models for Vision-Driven Embodied Agents. ICML 2025, PMLR 267: 70576–70631.
+
+\bibitem{hellstrom2024}
+Hellström, T., Kaiser, N., Bensch, S. A Taxonomy of Embodiment in the AI Era. Electronics, 13(22): 4441, 2024. DOI: 10.3390/electronics13224441.
+
+\bibitem{caict2025}
+China Academy of Information and Communications Technology, Tsinghua University Department of Electronic Engineering. Embodied Intelligence Development Report (2025)（具身智能发展报告（2025 年））. 2026-01. \url{http://www.caict.ac.cn/kxyj/qwfb/bps/202601/P020260130541978285206.pdf}
+
+\bibitem{lee2008}
+Lee, E. A. Cyber Physical Systems: Design Challenges. 11th IEEE International Symposium on Object and Component-Oriented Real-Time Distributed Computing (ISORC), 2008: 363–369. DOI: 10.1109/ISORC.2008.25.
+
+\bibitem{caict2024}
+China Academy of Information and Communications Technology, Beijing Humanoid Robot Innovation Center. Embodied Intelligence Development Report (2024)（具身智能发展报告（2024 年））. 2024-08. \url{https://www.caict.ac.cn/kxyj/qwfb/bps/202408/P020240830312499650772.pdf}
+
+\bibitem{onex2026}
+1X. NEO. \url{https://www.1x.tech/neo}
+
+\bibitem{bmw2026}
+BMW Group. BMW Group Advances the Use of Physical AI in Production with Figure 03 Project in Spartanburg. 2026-06-25. \url{https://newsroom.bmwgroup.com/global/bmw-group-advances-the-use-of-physical-ai-in-production-with-figure-03-project-in-spartanburg}
+
+\bibitem{citi2025}
+Citi Research. Embodied Intelligence: The Rise of Physical AI. 2025-12-05. \url{https://www.citigroup.com/global/insights/embodied-intelligence-the-rise-of-physical-ai}
+
+\bibitem{feili2025}
+Li, F.-F. From Words to Worlds: Spatial Intelligence is AI's Next Frontier. Substack, 2025-11-10. \url{https://drfeifei.substack.com/p/from-words-to-worlds-spatial-intelligence}
+
+\bibitem{gartner2024}
+Gartner. Gartner Identifies the Top 10 Strategic Technology Trends for 2025. 2024-10-21. \url{https://www.gartner.com/en/newsroom/press-releases/2024-10-21-gartner-identifies-the-top-10-strategic-technology-trends-for-2025}
+
+\bibitem{iso2021}
+ISO. ISO 8373:2021, Robotics — Vocabulary. 2021.
+
+\bibitem{isoiec2022}
+ISO/IEC. ISO/IEC 22989:2022, Information Technology — Artificial Intelligence — Artificial Intelligence Concepts and Terminology. 2022.
+
+\bibitem{ieee2025}
+IEEE. P3704: Standard for Evaluation Methods for the Capabilities of Embodied Intelligence (under development). PAR approved 2025-09-10.
+
+\bibitem{wef2025}
+World Economic Forum. Physical AI: Powering the New Age of Industrial Operations (white paper, with Boston Consulting Group). 2025-09.
+
+\bibitem{eucordis2025}
+European Commission. Accelerating Physical AI: Embodied Intelligence for the Next Frontier of AI-Powered Robotics. HORIZON-EIC-2026-AIC-01, CORDIS, 2025.
+
+\bibitem{std2026}
+MIIT Technical Committee for Humanoid Robot and Embodied Intelligence Standardization（工业和信息化部人形机器人与具身智能标准化技术委员会）. Standardization System for Humanoid Robots and Embodied Intelligence (2026 Edition)（人形机器人与具身智能标准体系（2026 版））. 2026-02-28. \url{https://miittc8.cie.org.cn/}
+
+\bibitem{oneill2024}
+Open X-Embodiment Collaboration. Open X-Embodiment: Robotic Learning Datasets and RT-X Models. ICRA 2024: 6892–6903. arXiv:2310.08864.
+
+\bibitem{black2024}
+Black, K., Brown, N., Driess, D., et al. $\pi_0$: A Vision-Language-Action Flow Model for General Robot Control. Robotics: Science and Systems XXI (RSS 2025). arXiv:2410.24164.
+
+\bibitem{kim2024}
+Kim, M. J., Pertsch, K., Karamcheti, S., et al. OpenVLA: An Open-Source Vision-Language-Action Model. CoRL 2024, PMLR 270: 2679–2713.
+
+\bibitem{nvidiagroot2025}
+Bjorck, J., Castañeda, F., Cherniadev, N., et al. GR00T N1: An Open Foundation Model for Generalist Humanoid Robots. arXiv:2503.14734, 2025.
+
+\bibitem{sanctuary}
+Sanctuary AI. \url{https://sanctuary.ai/}
+
+\bibitem{firoozi2025}
+Firoozi, R., Tucker, J., Tian, S., et al. Foundation Models in Robotics: Applications, Challenges, and the Future. The International Journal of Robotics Research, 44(5): 701–739, 2025. DOI: 10.1177/02783649241281508.
+
+\bibitem{liu2024survey}
+Liu, Y., Chen, W., Bai, Y., Liang, X., Li, G., Gao, W., Lin, L. Aligning Cyber Space with Physical World: A Comprehensive Survey on Embodied AI. IEEE/ASME Transactions on Mechatronics, 30(6): 7253–7274, 2025. DOI: 10.1109/TMECH.2025.3574943.
+
+\bibitem{brohan2023}
+Brohan, A., Brown, N., Carbajal, J., et al. RT-2: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control. arXiv:2307.15818, 2023.
+
+\bibitem{figure_helix}
+Figure AI. Helix. 2025-02-20. \url{https://www.figure.ai/news/helix}
+
+\bibitem{figure_seriesc}
+Figure AI. Series C. 2025-09-16. \url{https://www.figure.ai/news/series-c}
+
+\bibitem{skild}
+Skild AI. \url{https://www.skild.ai/}
+
+\bibitem{pi}
+Physical Intelligence. \url{https://physicalintelligence.company/}
+
+\bibitem{agibot}
+AgiBot. Company profile（公司介绍）. \url{https://www.agibot.com.cn/about/company}
+
+\bibitem{livescience2024}
+Allison, P. R. What is Embodied AI? Live Science, 2024-12-29. \url{https://www.livescience.com/technology/robotics/what-is-embodied-ai}
+
+\bibitem{plan2026}
+Central Committee of the Communist Party of China. Recommendations of the Central Committee of the Communist Party of China on Formulating the Fifteenth Five-Year Plan for National Economic and Social Development（中共中央关于制定国民经济和社会发展第十五个五年规划的建议）. 2025-10-23. \url{https://www.gov.cn/zhengce/202510/content_7046050.htm}
+
+\bibitem{ndrc2025}
+National Development and Reform Commission. Transcript of the November 2025 Press Conference（国家发展改革委 11 月份新闻发布会文字实录）. 2025-11-27. \url{https://www.ndrc.gov.cn/xwdt/wszb/11yxwfbh1/wzsl/}
+
+\bibitem{baai2026}
+Beijing Academy of Artificial Intelligence. Ten AI Technology Trends for 2026（2026 十大 AI 技术趋势）. 2026-01-08. \url{https://hub.baai.ac.cn/view/51757}
+
+\bibitem{beijing2025}
+Beijing Municipal Science and Technology Commission, Zhongguancun Science Park Management Committee, Beijing Municipal Development and Reform Commission, Beijing Municipal Bureau of Economy and Information Technology. Beijing Action Plan for Embodied Intelligence Science, Technology and Industry Cultivation (2025--2027)（北京具身智能科技创新与产业培育行动计划（2025—2027 年））. 2025-02-28. \url{https://www.beijing.gov.cn/zhengce/zhengcefagui/202503/t20250304_4024579.html}
+
+\bibitem{galbot}
+Galbot（银河通用）. \url{https://www.galbot.com/}
+
+\bibitem{liberai2026}
+Moonshot AI (Kimi Enterprise Solutions). LiberAI case study: let intelligence keep evolving in the real world（LiberAI 案例：让智能在真实世界持续进化，company case study）. WeChat, 2026-11-24. \url{https://mp.weixin.qq.com/s/N9P0CyC83upRjOJxRQyf1Q}
+
+\bibitem{chenby2024}
+Chen, B. Essay: How Should We View Embodied Intelligence in 2024（随笔：2024 的我们应该如何看待具身智能）. 2024-06-16. \url{https://www.boyuan.space/blogs/jushenzhineng.html}
+
+\bibitem{chenxd2026}
+Li, R. Academician Chen Xuedong: Embodied Intelligence Will Empower a New Generation of Intelligent Manufacturing and Drive the Fourth Industrial Revolution. People's Posts and Telecommunications（人民邮电报）, 2026-11-20. \url{https://mp.weixin.qq.com/s/auo7RGbgSZ76p88uqdr2xA}
+
+\bibitem{agnesrepo2026}
+Agnes AI Systems Team. Agnes Harness: A pluggable agent harness for Forward Deployed Engineering (FDE). GitHub: AgnesAI-Labs/agnes-harness, 2026. \url{https://github.com/AgnesAI-Labs/agnes-harness}
+
+\bibitem{agnestr2026}
+Agnes AI Systems Team. Agnes Harness Technical Report. GitHub: AgnesAI-Labs/Agnes-Harness-Technical-Report-Nov-2026, 2026. \url{https://github.com/AgnesAI-Labs/Agnes-Harness-Technical-Report-Nov-2026}
+
+\bibitem{ubtech}
+UBTECH（优必选科技）. Company profile. \url{https://www.ubtrobot.com/cn/about/company-profile}
+
+\bibitem{brooks1991}
+Brooks, R. A. Intelligence without Representation. Artificial Intelligence, 47(1–3): 139–159, 1991. DOI: 10.1016/0004-3702(91)90053-M.
+
+\bibitem{varela1991}
+Varela, F. J., Thompson, E., Rosch, E. The Embodied Mind: Cognitive Science and Human Experience. MIT Press, 1991.
+
+\bibitem{dreyfus1992}
+Dreyfus, H. L. What Computers Still Can't Do: A Critique of Artificial Reason. MIT Press, 1992.
+
+\bibitem{newen2018}
+Newen, A., De Bruin, L., Gallagher, S. (eds.). The Oxford Handbook of 4E Cognition. Oxford University Press, 2018. DOI: 10.1093/oxfordhb/9780198735410.001.0001.
+
+\bibitem{shapiro2026}
+Shapiro, L., Spaulding, S., Dove, G. Embodied Cognition. Stanford Encyclopedia of Philosophy, substantive revision 2026. \url{https://plato.stanford.edu/entries/embodied-cognition/}
+
+\bibitem{zhangbo2025}
+Zhang, B. Embodied Intelligence Promotes the Realization of Artificial General Intelligence（具身智能推动实现通用人工智能）. People's Daily Overseas Edition, 2025-06-09(09).
+
+\bibitem{feng2025}
+Feng, T., Wang, X., Jiang, Y.-G., Zhu, W. Embodied AI: From LLMs to World Models. IEEE Circuits and Systems Magazine, 25(4): 14–37, 2025. DOI: 10.1109/MCAS.2025.3603693.
+
+\bibitem{sun2024}
+Sun, F., Chen, R., Ji, T., Luo, Y., Zhou, H., Liu, H. A Comprehensive Survey on Embodied Intelligence: Advancements, Challenges, and Future Perspectives. CAAI Artificial Intelligence Research, 3: 9150042, 2024. DOI: 10.26599/AIR.2024.9150042.
+
+\bibitem{wangsung2025}
+Wang, Y., Sun, A. Toward Embodied AGI: A Review of Embodied AI and the Road Ahead. arXiv:2505.14235, 2025.
+
+\bibitem{duan2022}
+Duan, J., Yu, S., Tan, H. L., Zhu, H., Tan, C. A Survey of Embodied AI: From Simulators to Research Tasks. IEEE Transactions on Emerging Topics in Computational Intelligence, 6(2): 230–244, 2022. DOI: 10.1109/TETCI.2022.3141105.
+
+\bibitem{ccf2023}
+Lu, C., Wang, H. Embodied Intelligence, CCF Expert Discourse on Terminology（具身智能 | CCF 专家谈术语）. China Computer Federation, 2023-07-22. \url{https://www.ccf.org.cn/Media_list/gzwyh/jsjsysdwyh/2023-07-22/794317.shtml}
+
+\bibitem{kejiribao2024}
+Cui, S. Embodied Intelligence: Stepping onto the Center of the AI Stage?（具身智能：步入 AI 舞台中央？）. Science and Technology Daily（科技日报）, 2024-05-27. \url{http://kpzg.people.com.cn/n1/2024/0527/c404214-40243832.html}
+
+\bibitem{tantn2025}
+Yang, G. Academician Tan Tieniu: Five Trend Predictions for the Development of Embodied Intelligence（中国科学院院士谭铁牛：具身智能发展五大趋势预测）. China Information Industry News, 2025-04-03. \url{https://www.nju.edu.cn/info/1056/412131.htm}
+
+\bibitem{zhangwei2025}
+Zhang, W., Liu, T. Research and Applications of Embodied Intelligence（具身智能的研究与应用）. CAAI Transactions on Intelligent Systems（智能系统学报）, 2025, 20(1): 255–262. DOI: 10.11992/tis.202406044.
+
+\bibitem{zhangfeng2025}
+Zhang, F. Embodied Intelligence Will Become the Key Junction at Which AI Enters the Real Physical World (transcript, not reviewed by the speaker). Sina Finance, 2025-08-10. \url{https://finance.sina.com.cn/meeting/2025-08-10/doc-infknpkc6952150.shtml}
+
+\bibitem{yao2025}
+Yao, Q. Address at the opening ceremony of the Global Developer Pioneer Convention and the International Embodied Intelligence Skills Competition, Shanghai, 2025-12-13. As reported by People's Daily Online (Shanghai). \url{http://sh.people.com.cn/n2/2025/1213/c134768-41441709.html}
+
+\bibitem{ia2025}
+Institute of Automation, Chinese Academy of Sciences. Interdisciplinary Strategic Symposium on Embodied Intelligence Successfully Held（具身智能学科交叉战略研讨会顺利召开）. 2025-02-06. \url{http://www.ia.cas.cn/xwzx/jryw/202502/t20250206_7524955.html}
+
+\bibitem{nmi2026}
+From Embodied Intelligence to Physical AI (editorial). Nature Machine Intelligence, 8(4): 491–492, 2026. DOI: 10.1038/s42256-026-01239-3.
+
+\bibitem{monograph2026}
+Zhang, W., Shen, C., Xue, T., et al. Physical AI: Concepts, Techniques, and Challenges. arXiv:2610.27045, 2026.
+
+\bibitem{tong2026}
+Feng, T. T., Wang, X., Zhu, W. Self-evolving Embodied AI. arXiv:2602.04411, 2026.
+
+\bibitem{ma2026}
+Ma, Y., Song, Z., Zhuang, Y., Hao, J., King, I. A Survey on Vision-Language-Action Models for Embodied AI. IEEE Transactions on Neural Networks and Learning Systems, 2026. DOI: 10.1109/TNNLS.2025.3650584.
+
+\bibitem{hoffmann2025}
+Hoffmann, M., Patni, S. P. Embodied AI in Machine Learning: Is It Really Embodied? In: Macrine, S. L., Fugate, J. M. B., Abdulali, A., Hughes, J. (eds.). Embodied Intelligence: Multidisciplinary Perspectives on Natural, Artificial, and Hybrid Systems. MIT Press, 2026: 203–228. DOI: 10.7551/mitpress/15999.003.0017.
+
+\bibitem{stankovic1988}
+Stankovic, J. A. Misconceptions about Real-Time Computing: A Serious Problem for Next-Generation Systems. Computer, 21(10): 10–19, 1988. DOI: 10.1109/2.7053.
+
+\bibitem{zador2023}
+Zador, A., Escola, S., Richards, B., et al. Catalyzing Next-Generation Artificial Intelligence through NeuroAI. Nature Communications, 14: 1597, 2023. DOI: 10.1038/s41467-023-37180-x.
+
+\bibitem{gupta2021}
+Gupta, A., Savarese, S., Ganguli, S., Fei-Fei, L. Embodied Intelligence via Learning and Evolution. Nature Communications, 12: 5721, 2021. DOI: 10.1038/s41467-021-25874-z.
+
+\bibitem{pfeifer2007}
+Pfeifer, R., Lungarella, M., Iida, F. Self-Organization, Embodiment, and Biologically Inspired Robotics. Science, 318(5853): 1088–1093, 2007. DOI: 10.1126/science.1145803.
+
+\bibitem{ewa2025}
+Hong, Y., Sun, R., Li, B., et al. Embodied Web Agents: Bridging Physical-Digital Realms for Integrated Agent Intelligence. NeurIPS 2025 Datasets and Benchmarks Track. Advances in Neural Information Processing Systems, 38: 53031–53050.
+
+\bibitem{paolo2024}
+Paolo, G., Gonzalez-Billandon, J., Kégl, B. Position: A Call for Embodied AI. ICML 2024, PMLR 235: 39493–39508.
+
+\bibitem{yu2026two}
+Yugui Yu. Two Different Goals: Dissociating the Machine Mind from Artificial Intelligence（两个不同的目标）. Zenodo: 10.5281/zenodo.23969047, 2026.
+
+\bibitem{yu2026blog}
+Yugui Yu. Does the Machine Heart Need a Body?（机器之心需要具身吗）. YYG Strategy Lab blog, 2026. \url{https://yuyuguilab.github.io/zh/technology/machine-heart-embodiment/}
+
+\bibitem{beaulieu2023}
+Beaulieu, S. L., Kriegman, S. Glamour Muscles: Why Having a Body Is Not What It Means to Be Embodied. arXiv:2307.08598, 2023.
+
+\bibitem{kadian2020}
+Kadian, A., Truong, J., Gokaslan, A., et al. Sim2Real Predictivity: Does Evaluation in Simulation Predict Real-World Performance? IEEE Robotics and Automation Letters, 5(4): 6670–6677, 2020. DOI: 10.1109/LRA.2020.3013848.
+
+\bibitem{chebotar2019}
+Chebotar, Y., Handa, A., Makoviychuk, V., et al. Closing the Sim-to-Real Loop: Adapting Simulation Randomization with Real World Experience. ICRA 2019: 8973–8979. DOI: 10.1109/ICRA.2019.8793789.
+
+\bibitem{jiemian2024}
+Lu, K. Humanoid Robots Steal the Show at the Pavilion, and Commercialization Moves Faster than Expected---WAIC Observation（人形机器人在展馆出尽风头，商业化步伐比预期更快｜WAIC 观察）. Jiemian News（界面新闻）, 2024-07-06. \url{https://www.jiemian.com/article/11380635.html}
+
+\bibitem{figure_bmw}
+Figure AI. Production at BMW. 2025-11-19. \url{https://www.figure.ai/news/production-at-bmw}
+
+\bibitem{goldman2022}
+Goldman Sachs. Humanoid Robots: Sooner Than You Might Think. 2022-11-15. \url{https://www.goldmansachs.com/insights/articles/humanoid-robots}
+
+\bibitem{brooks2025}
+Brooks, R. Why Today's Humanoids Won't Learn Dexterity. rodneybrooks.com, 2025-09-26. \url{https://rodneybrooks.com/why-todays-humanoids-wont-learn-dexterity/}
+
+\bibitem{goldberg2025}
+Manke, K. Are we truly on the verge of the humanoid robot revolution? Berkeley News, 2025-08-27. \url{https://news.berkeley.edu/2025/08/27/are-we-truly-on-the-verge-of-the-humanoid-robot-revolution/}
+
+\bibitem{bloomberg2026}
+Guest, P. Humanoid Robots Are the Next Phase of the AI Hype Cycle. Bloomberg, 2026-05-08. \url{https://www.bloomberg.com/news/articles/2026-05-08/humanoid-robots-aren-t-as-advanced-as-the-ai-hype-cycle-suggests}
+
+\bibitem{mittr2026}
+O'Donnell, J. The Human Work Behind Humanoid Robots Is Being Hidden. MIT Technology Review, 2026-02-23. \url{https://www.technologyreview.com/2026/02/23/1133508/the-human-work-behind-humanoid-robots-is-being-hidden}
+
+\end{thebibliography}
+
+\end{document}

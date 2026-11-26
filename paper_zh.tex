@@ -1,0 +1,767 @@
+% 中文版 LaTeX。
+% 编译：tectonic paper_zh.tex（首次编译联网拉取 CTAN 资源包，含 Fandol 字体）
+\documentclass[10pt,fontset=fandol]{ctexart}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{rotating}
+\usepackage{xurl}
+% 日文与谚文的原文字形只出现在三条文献的题名里；Fandol 字库不含日本新字体与谚文。
+% 两个字体族均取自 Tectonic 资源包；扩展名显式给出（英文版的正文字体包 newtx 会改写 fontspec 对文件名的补全）。
+% 字体缺失时相应字形不输出，编译日志给出缺字警告。
+\IfFontExistsTF{HaranoAjiMincho-Regular.otf}{\newCJKfontfamily\jafont{HaranoAjiMincho-Regular}[Extension=.otf]}{\newcommand*{\jafont}{}}
+\IfFontExistsTF{UnBatang.ttf}{\newCJKfontfamily\hangulfont{UnBatang}[Extension=.ttf]}{\newcommand*{\hangulfont}{}}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\hypersetup{pdftitle={具身智能：定义、澄清、判据与边界},pdfauthor={余玉桂（余玉桂战略研究室）},pdfsubject={具身智能的定义、澄清、判据及其与通用人工智能的区别},pdfkeywords={具身智能,物理人工智能,能力概念,谓词归属,合取,通用人工智能,AGI 人本拟合论}}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlength{\tabcolsep}{4pt}
+% 两张定义语料表（表 4、表 5）高度接近一页，默认的页顶份额放不下会被挤到参考文献之后
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.3}
+\renewcommand{\textfraction}{0.06}
+\renewcommand{\floatpagefraction}{0.75}
+
+\title{具身智能：定义、澄清、判据与边界}
+
+\author{余玉桂\\ 余玉桂战略研究室\\ \texttt{they4897@gmail.com}}
+
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent “具身智能”在 2024 至 2026 年间从机器人学与认知科学的术语成为多国政策文件、产业宣传与学术综述共用的词，却一直没有稳定的定义；与之并行的英文名称 embodied AI 与 physical AI 同样如此。本文把 AGI 人本拟合论的概念工具延伸到这一术语上。（1）\textbf{定义}：具身是系统与环境之间的关系属性。系统相对环境具身，当且仅当它的行动通过物理因果改变环境状态、反馈来自物理测量（物理闭环），并且它的响应时延小于任务相关物理过程的特征时间（时限由环境规定）。具身智能是“具身”与“智能”两个独立谓词的合取；它不构成新的概念类型，而是能力概念在物理环境类上的受限情形。（2）\textbf{澄清}：英文与中文定义语料的普查表明，现有分歧有三个来源——合取的一支被写进定义，环境类未加声明，词的层级未加区分。三种非法滑动在该话语中各有对应形态，另有一种为该话语特有：合取混淆。（3）\textbf{判据}：由两条条件推出四项可执行检测——闭环检测、换身检测、回滚检测、暂停检测——并以时限裕度给出“弱具身”的定量读法。（4）\textbf{区别与实证}：具身智能与机器之心、世界模型互不蕴含；“具身智能是通往通用人工智能的必由之路”作为能力主张可以成立，作为路线主张不是概念推论；政策、智库与企业文本中的用例显示，具身成立而能力不足、能力成立而具身不成立的系统都被冠以该名。文末给出七条证伪条款、面向新案例的准入协议与适存条款。
+\end{abstract}
+
+\medskip
+\noindent\textbf{关键词：} 具身智能；物理人工智能；能力概念；谓词归属；合取；通用人工智能；AGI 人本拟合论
+
+
+\section{引言}\label{sec:s1}
+
+具身智能原是机器人学与认知科学的术语，2024 至 2026 年间进入多国的政策文本与企业话语。中国的政府工作报告于 2025 年与 2026 年连续把它列入未来产业 \cite{govreport2025,govreport2026}；国际电信联盟于 2025 年 12 月发布首个具身人工智能系统标准《具身智能系统框架及能力要求》\cite{itu2025}，2026 年 2 月又成立具身智能标准焦点组 \cite{caict2026}；八所中国高校于 2025 年申请增设“具身智能”本科专业 \cite{yicai2025}。各国政府的用词不一。日本与韩国的国家计划采用 physical AI \cite{japan2026,korea2026}；欧盟委员会把机器人革命称作“physical AI” \cite{eu2025}；英国以 embodied intelligence 界定智能机器 \cite{uk2025}；美国的《人工智能行动计划》则把无人机、自动驾驶汽车与机器人称为“物理世界中的新发明”，注明其“术语尚不存在”，文件本身一次也不使用 physical AI 或 embodied AI \cite{aiaap2025}。在企业与投资机构一侧，英伟达的首席执行官在 2025 年 1 月的消费电子展上称“人工智能的下一个前沿是物理人工智能” \cite{ces2025}；Figure 的人形机器人在宝马的工厂里演示物流作业 \cite{figure_f03}；摩根士丹利估计 2050 年人形机器人市场将达 5 万亿美元 \cite{morganstanley2025}。
+
+投入的规模与实际使用之间有可查的落差 \cite{caict2026,idc2026,reuters2026}，而定义的状况与这一热度更不相称。英文语境连名称都没有稳定：政策智库 CSET 的判断是该领域“还没有一个通用的名称” \cite{cset2026}（英文文献的引文由本文译出，下同）；英伟达在 2024 年的发布稿里使用 embodied AI，2025 年起改用 physical AI，未见公司区分两个术语的声明 \cite{nvidia2024,ces2025,nvglossary}；综述、厂商词条与百科条目各有其定义（表 4）。中文语境可以征引的定义句有十条，在载体范围、上位概念、定义句式与智能来源四个方面界定不一（3.4 节）；标准化在推进，术语没有跟上：全国机器人标准化技术委员会截至 2026 年 8 月下达的 52 项人形机器人标准研制计划覆盖零部件、数据集、整机、系统集成、测试验证与安全，没有术语类标准 \cite{caict2026}；国务院《关于深入实施“人工智能+”行动的意见》通篇不使用该词 \cite{guofa2025}。
+
+本文对这一局面的诊断是：“具身智能”一词并指两个相互独立的谓词。“具身”说的是闭环经过哪里、时间由谁规定；“智能”说的是在给定范围内能做到什么。两个谓词各有判据，各自成立而不推出对方。一词并指之后，证明其中一支就被读作证明了两支：有身体的被当作有智能的，能力强的模型被当作具身的。定义之争因此多属位置之争：各派把合取的不同一支、或词的不同层级写进了定义。
+
+由此得出本文的核心主张：具身智能没有新的概念类型，它是能力概念在物理环境类上的受限情形——“智能”的环境项取物理世界时，增加两条软件环境没有的约束。这一主张把《四个概念，四种类型》的类型学 \cite{yu2026four} 与《世界模型：定义、澄清、区别与边界》的定义方法 \cite{yu2026wm} 延伸到该术语。两篇论文处理的是类型混用与一词多位置；这里多出一个结构：一词并指两个谓词。
+
+“X 是不是具身智能”因此须拆成三个问题：X 相对于哪个环境具身；X 在该环境类上的能力范围有多大；这个词被用在哪一层。
+
+本文结构如下。第 2 节给出定义、推导、判别力与概念类型；第 3 节讨论名称、词的层级、四种滑动以及英文与中文两种定义语料；第 4 节给出四项检测；第 5 节区分具身智能与智能、机器之心、世界模型及通用人工智能；第 6 节给出两个方向的经验证据；第 7 节给出证伪条款、准入协议与适存条款。
+
+\section{定义：条件、推导与类型}\label{sec:s2}
+
+\subsection{定义}
+
+\textbf{定义 1（具身）。} 系统 $S$ 相对环境 $E$ 具身，当且仅当 $S$ 在 $E$ 中执行任务时满足两条条件：
+
+\begin{itemize}
+\item \textbf{（E1）物理闭环。} $S$ 的行动通过物理因果改变 $E$ 的状态；任务的结果由这一改变的物理后果决定，而不由 $S$ 的输出被如何解读决定；$S$ 的反馈——若有——来自物理测量，而不来自符号。
+\item \textbf{（E2）时限由环境规定。} $E$ 中与任务相关的物理过程不因 $S$ 的计算而停顿；$S$ 完成一次感知、决策与行动所需的时延，小于该过程的特征时间（操作化见 4.4 节）。
+\end{itemize}
+\textbf{定义 2（具身智能）。} $S$ 相对 $E$ 具有具身智能，当且仅当 $S$ 相对 $E$ 具身，并且 $S$ 相对 $E$ 具有智能。后一个谓词即《四个概念，四种类型》所界定的能力概念：回答“系统在什么范围内能做到什么”，其归属层级是系统与环境的组合 \cite{yu2026four}。
+
+定义有五点须说明。
+
+其一，归属单位是系统与环境的组合。“具身”既不是身体的属性，也不是模型的属性。有身体不等于具身：一台由人逐步遥控的人形机器人，行动与反馈都经过人（表 2）。系统边界因此先于判定：在“大模型加机器人”里，不具身的是大模型，具身的是包含传感器、控制器与执行器的整个系统。E1 中“被如何解读”与“符号”两项，说的都是 $S$ 与 $E$ 之间，不涉及系统内部的接口：由大模型规划加技能库运行的系统，内部经过符号，对外仍经物理因果作用于环境。郑南宁等援引李飞飞与 Krishna 的表述，“具身”的含义“并非单纯指代物理实体，而是与环境交互以及在环境中执行的整体需求和功能” \cite{zheng2026}；本文把这一澄清写成可判定的条件。
+
+其二，环境是参数。“$S$ 具身”是不完整的断言，完整的断言带环境类。E2 使这种相对性可以度量：特征时间以天计的过程（混凝土养护、堆肥）对响应时延几乎没有要求，特征时间以毫秒计的过程（抓取、行走、人机共处）要求控制系统级的时延。两条条件给出判定，时限裕度（4.4 节）另行给出连续量度。
+
+其三，定义不预设三件事。不预设实现：按控制律运行、按端到端策略运行、由大模型规划加技能库运行，三者满足两条条件时同样具身。不预设形态：机械臂、四足、车辆、无人机、固定式过程控制器都可以具身。不预设身体是否分担计算：形态计算的传统以身体对控制的贡献刻画具身 \cite{pfeifer2006,muller2017,liu2025csur}，本文把这一性质归入实现层——它说明智能如何获得，不说明闭环经过哪里。
+
+其四，两支的判定形态不同。具身一支由两条条件给出判定，E1 为二值，E2 借时限裕度带有程度。能力一支是能力概念，其定义完成形态是度量 \cite{yu2026four}，没有二值判定的捷径。定义 2 在能力一支上因此是程度性的：一个系统是否称得上具身智能，取决于主张者为能力一支声明的阈值。评测实践已有双阈值的先例：一篇评测报告判定 GPT-6-Astra“大体跨过了具身能力的阈值，但尚未跨过实用具身智能的阈值” \cite{gptastra2026}。工业机器人不被称为具身智能而人形机器人被称为具身智能，差别在能力一支的阈值，不在具身一支。
+
+其五，无身体不等于不具身。信通院的报告在物理人工智能名下写入“缺乏独立物理躯体、但负责管理和优化物理基础设施的系统” \cite{caict2026}；英伟达的 embodied AI 词条把“工厂与仓储设施”也列为具身人工智能系统 \cite{nvglossary}。按本文的定义，这类系统若经传感器与执行器闭环作用于物理过程，即为具身；身体不是判据，闭环才是。日本的政策文件从相反方向断言：物理人工智能既然以现实世界为对手，就必然需要‘身体’ \cite{japanrobo2026}。在本文的定义里，身体不保证两条条件中的任何一条：它既不保证闭环，也不保证时限。咨询机构的定义同样不以单机为限：麦肯锡把 physical AI 系统分为具身于单台机器的与嵌入多台设备或基础设施的，共同的规定能力是用感官输入与习得的环境表征在物理世界中决策并行动，人工干预减到最少 \cite{mckinsey2026}。
+
+\subsection{推导：六维对照与两条条件}
+
+本定义由软件闭环与物理闭环的对照得到（表 1），不是先验构造。
+
+\begin{table}[htbp]
+\centering
+\caption{软件闭环与物理闭环的六维对照}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{1.9cm}YY>{\centering\arraybackslash}p{1.7cm}}
+\toprule
+维度 & 软件闭环 & 物理闭环 & 隶属条件 \\
+\midrule
+--- & --- & --- & --- \\
+反馈来源 & 接口返回、文本、日志 & 视觉、力觉、本体感觉等物理测量，带噪声与延迟 & E1 \\
+动作空间 & 离散的工具调用与符号操作 & 受动力学约束的连续控制 & E1 \\
+失败后果 & 回滚、重试、隔离是工程配置，非必然；复原一旦可行，代价至多是计算 & 复原需物理代价，且未必可能 & E1 的推论 \\
+学习信号 & 文本反馈、执行成败 & 物理交互中的奖励与接触反馈 & E1 的推论 \\
+响应时限 & 秒级到分钟级通常可接受 & 由物理过程规定 & E2 \\
+环境 & 规则由人给定，相对确定 & 开放、非稳态、长尾 & E2 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+六维可以归结为两条。第一，闭环经过的是什么：物理测量，还是符号与接口。第二，时间由谁规定：环境的物理过程，还是请求方。前四维是第一条的展开，后两维是第二条的展开：响应时限直接给出特征时间，环境的开放与非稳态使这一时间不受系统控制。只取第一条，会把逐步遥控的机器人与端到端策略同等看待；只取第二条，会把高频交易的软件系统算作具身。两条合取，定义才有完整的判别力。
+
+对这条定义有三条可能的质疑，须先回应。
+
+其一，一切计算都发生在物理硬件上，E1 是否对任何系统都成立。E1 要求的不是基质，而是闭环的对象：行动改变的是哪个世界的状态，任务结果取决于物理定律还是取决于解释。屏幕像素的物理性质不进入任务结果，进入任务结果的是像素所承载的符号。
+
+其二，仿真里的智能体有身体、有感知、有行动，为什么不算具身。仿真中的智能体处在《世界模型》所说的模拟环境位置：环境的状态转移以智能体的行动为条件 \cite{yu2026wm}，但环境是计算出来的，可以暂停、重置与回滚，行动没有物理后果。计算机视觉界的 Embodied AI 研究与仿真基准也把仿真环境中的虚拟身体称为具身 \cite{savva2019,yang2025embodiedbench,hellstrom2024}。本文不判定该用法的对错，只指出它与物理闭环不是同一个谓词；仿真到现实的迁移，就是从模拟环境位置换到物理闭环（5.3 节）。
+
+其三，时延为什么属于具身，而不只是能力的一个维度。一种异议是：在动态环境中行动迟缓的机器人仍然具身，只是能力不足。本文把时延写入具身的理由是环境类的确定。能力相对环境类而立，系统实际耦合的是哪个环境类，由时延决定：响应慢于动态过程的系统，只与环境的准静态成分构成闭环；把它称作“相对动态环境具身而能力不足”，等于把一个它并未耦合的环境类算作它的环境。按时限判定，具身一支须声明环境类，能力一支随之有了确定的参照。把时延归入能力一支也能表达同一差别，代价是对任何有执行器的物理系统，具身一支都只能判为成立。
+
+\subsection{判别力}
+
+定义的判别力见表 2。表中“具身”按定义 1 判定；“具身智能”另须定义 2 的能力一支成立。
+
+\begin{table}[htbp]
+\centering
+\caption{边界表}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{5.2cm}>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}p{2.2cm}Y}
+\toprule
+系统 & E1 & E2 & 判定 \\
+\midrule
+--- & --- & --- & --- \\
+软件智能体（大模型加工具框架） & 不满足 & — & 不具身 \\
+仿真环境中的智能体 & 不满足 & — & 不具身；属世界模型的模拟环境位置 \\
+“具身智能大模型”（$S$ 指模型本身） & 不满足 & — & 模型不具身；称呼把系统谓词用于组件 \\
+人代行的系统（$S$ 指计算部分，人读数、人操作） & 不满足 & — & 不具身；行动与反馈都经过人 \\
+大模型逐步遥控的人形机器人 & 满足 & 准静态环境满足，动态环境不满足 & 相对准静态环境具身 \\
+人工可远程接管的人形机器人（1X 的 NEO 一类） & 自主运行时满足，远程接管时不满足 & 同左 & 判定随运行方式而异；接管时闭环经过人 \\
+搭载端到端视觉—语言—动作策略的机器人 & 满足 & 满足 & 具身 \\
+预编程工业机器人 & 满足 & 满足 & 具身；能力范围由程序给定 \\
+过程控制器（温控、灌溉等） & 满足 & 满足（裕度大） & 具身；裕度大 \\
+L4 级自动驾驶 & 满足 & 满足 & 具身 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+表 2 有四行须说明。预编程工业机器人与过程控制器按定义 1 具身：行动的后果由物理定律决定，时间由产线或工艺过程规定。这一判定是有意的——它表明“具身”不承诺“智能”。信通院 2025 年的报告把具身智能的核心表述为构建由数据驱动形成闭环的智能系统，以区别于需要注入人的知识经验的开环系统 \cite{caict2025}。预编程工业机器人按这一表述不属于具身智能，按本文的定义则具身而能力一支由程序给定。两处在合取的结论上一致，理由不同：该表述把数据驱动的闭环写成一条，本文把它拆成具身与能力两条。这类系统在控制工程中即过程控制器，信息物理系统的定义已把计算与物理过程的闭环整合作为对象 \cite{lee2008}。L4 级自动驾驶一行与智库文本一致：中国信通院的报告把宠物机器人与 L4 自动驾驶都说成“本质上都同时具备具身和智能两种属性” \cite{caict2024}。搭载端到端策略一行，$S$ 指机器人整体；策略本身是组件，不具身。人工可远程接管一行，$S$ 指机器人；1X 的产品页写明，NEO 遇到不会做的任务时，1X 的专家可以在预约的时间远程监督它的行动 \cite{onex2026}，监督期间闭环经过人，判定与“人代行”一行相同。
+
+\subsection{概念类型}
+
+《四个概念，四种类型》区分四种概念类型——智能是能力概念，人类智能是样本概念，人工智能是造物概念，通用人工智能是参照系概念——并规定每一类的定义完成形态不同：能力概念以带构造效度声明的度量收尾，参照系概念不以定义收尾，只以参照集声明收尾 \cite{yu2026four}。《世界模型》为类型表增补功能概念，其定义完成形态是工程规格 \cite{yu2026wm}。具身智能属于能力概念：它的定义完成形态是相对于一个声明过的环境类的度量，不是一份规格。它与“智能”的区别只在环境项——外延是智能概念外延的一部分，内涵多出两条环境约束。
+
+本文因此不把具身智能列为新的概念类型。《世界模型》为类型表补了功能概念一行；本文不补新行，只在能力概念一行加一个限定：环境项取物理环境类时，称具身智能。《四个概念，四种类型》的三层框架在此照常适用 \cite{yu2026four}：本体层，具身是系统与环境的关系属性；认识层，支持“系统相对环境具身”的证据是四项检测的结果（第 4 节）；方法层，检测程序与时限裕度的计算。“具身智能本质上是什么”因此不是一个可以独立回答的问题：受限情形没有独立于智能的本质。可以回答的是两个问题：相对哪个环境具身；在该环境类上能做到什么。
+
+\section{澄清：名称、层级与滑动}\label{sec:s3}
+
+\subsection{名称竞争}
+
+“具身智能”不是这个领域的唯一名称。表 3 列出四个相邻的名称及其主要使用方。
+
+\begin{table}[htbp]
+\centering
+\caption{四个相邻的名称}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.0cm}YY}
+\toprule
+名称 & 主要使用方 & 定义状况 \\
+\midrule
+--- & --- & --- \\
+具身智能（Embodied AI，Embodied Intelligence） & 机器学习与计算机视觉学界；中国信通院与国际电信联盟的标准；中国政府工作报告 & 英文定义散见于综述、厂商词条与大众科普（表 4）；中文有十条定义句，界定不一（表 5） \\
+物理人工智能（Physical AI） & 英伟达；Figure、Skild AI 与 Sanctuary AI 等机器人公司；宝马等应用企业；麦肯锡、花旗与 CSET 等机构；中国信通院 \cite{nvglossary,figure_f03,bmw2026,mckinsey2026,citi2025,caict2026} & 厂商词条、咨询机构与智库报告给出定义；注明与具身智能经常互换使用 \cite{cset2026} \\
+空间智能（Spatial Intelligence） & 李飞飞与 World Labs & 以功能描述为主；在机器人一节称之为“行动中的具身智能” \cite{feili2025} \\
+代理式人工智能（Agentic AI） & Gartner \cite{gartner2024} & 以自主规划与行动为内容；所指与前三个名称部分重叠 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+名称的更替在一家公司的文本里有连续记录。英伟达 2024 年 3 月的发布稿四处使用 embodied AI，physical AI 一次未出现 \cite{nvidia2024}；到 2025 年 1 月的消费电子展，主词已是 physical AI \cite{ces2025}。该公司的 embodied AI 词条给出定义并链接到 physical AI 词条，后者通篇不提 embodied AI \cite{nvglossary}。中国信通院 2026 年的报告写道，“具身智能和物理人工智能在核心内涵、技术底座与作用对象层面正在快速趋同，本质是同一技术范式的不同表述”；同一页又区分二者的侧重，具身智能更强调“智能如何通过身体实现”，物理人工智能更强调“人工智能如何进入并作用于物理世界” \cite{caict2026}。CSET 的政策简介同样注明两个术语“密切相关且经常互换使用”，并把 physical AI 当作较宽的概念 \cite{cset2026}。两个术语如何分界，CSET 取有无物理形体；按本文的定义（2.1 节），分界不在形体，在闭环。
+
+标准的用词同样分裂。国际电信联盟的标准以具身人工智能为名，表 5 中的定义句即出自该标准第 3.2.1 条 \cite{itu2025}；ISO 的机器人词汇表与人工智能术语标准都没有收录具身类术语 \cite{iso2021,isoiec2022}；IEEE 有六项具身智能标准在研，评估方法一项 2025 年立项，尚未发布 \cite{ieee2025}。政府文件之外，世界经济论坛的白皮书以 physical AI 为题 \cite{wef2025}；欧盟的研发计划把两个名称并置于一个题名 \cite{eucordis2025}。国内标准体系与国际标准定向衔接：国际电信联盟的焦点组下设九个工作组，布局与《人形机器人与具身智能标准体系（2026 版）》深度衔接 \cite{caict2026,std2026}。已发布的国际定义只有国际电信联盟一条。命名竞争不限于中英之间，也没有随标准制定而收敛。
+
+embodiment 一词在国际文献中另有三种用法。第一种把 embodiment 用作机器人的身体类型：跨体（cross-embodiment）学习把多种机器人的数据并入同一个模型，一个开放数据集即以 22 种机器人本体计数 \cite{oneill2024,black2024,kim2024,nvidiagroot2025}，Sanctuary AI 也把支持多种硬件配置称为 multi-embodiment \cite{sanctuary}。第二种以身体、大脑与环境的耦合为具身智能的内容：一篇综述把具身智能定义为一种计算路径，以智能体与环境的紧密耦合为要件，以智能体自身的身体与感知运动系统为约束，并明言虚拟身体同样适用 \cite{liu2025csur}。第三种指仿真环境中带虚拟身体的智能体：EmbodiedBench 只在仿真环境中评测 \cite{yang2025embodiedbench}；一篇机器人基础模型综述注意到，在大模型能力延伸到具身领域的文献里，“具身”通常指仿真器中的虚拟身体，而非物理机器人本体 \cite{firoozi2025}；Hellström 等指出，让仿真的虚拟机器人在虚拟世界中收集数据的做法被称作 Embodied AI，这使本已多义的术语更不清晰 \cite{hellstrom2024}。英文综述对仿真的态度并不一致：另一篇综述把赛博空间中的智能体称为离身人工智能，把物理空间中的称为具身人工智能 \cite{liu2024survey}。三种用法各有其文献传统，与本文的定义不冲突，但不可互换：E1、E2 只对系统与环境的关系成立。
+
+产业侧不给定义。把一类模型称作视觉—语言—动作模型的 RT-2，正文不使用“具身”一词 \cite{brohan2023}；机器人领域的综述也不给出具身智能的定义 \cite{firoozi2025}；$\pi_0$、OpenVLA 与 GR00T N1 使用 embodiment 一词时都指机器人本体 \cite{black2024,kim2024,nvidiagroot2025}。机器人公司的自称同样如此：Figure 在三篇文稿中分别使用 Embodied AI、embodied intelligence 与 physical AI，都不加定义 \cite{figure_helix,figure_seriesc,figure_f03}；Skild AI 与 Sanctuary AI 的官网使用 physical AI，不使用 embodied AI \cite{skild,sanctuary}；Physical Intelligence 自称“把通用人工智能带入物理世界” \cite{pi}；智元机器人自称“以具身智能为核心技术方向” \cite{agibot}。面向公众的定义句主要来自厂商词条与大众科普 \cite{nvglossary,livescience2024}。
+
+《世界模型》的论断“命名竞争奖励可认领，不奖励准确”在这里表现得更强 \cite{yu2026wm}。为“具身智能”提供合法性的不只是厂商：政府工作报告、“十五五”规划建议、国际标准、本科专业设置与智库报告共同使它更容易被认领 \cite{plan2026,itu2025}。提示风险的也是同类机构——国家发展和改革委员会提出“建立健全具身智能行业准入和退出机制” \cite{ndrc2025}，智源研究院以“具身智能迎来行业‘出清’”为 2026 年趋势之一的标题 \cite{baai2026}。就本文考察的文本而言，官方文本既提供合法性又提示风险，这一情形在“世界模型”一词上没有出现。
+
+\subsection{词的四个层级}
+
+同一个词在话语中落在四个层级上，各层的判据不同。
+
+\begin{itemize}
+\item \textbf{谓词层}：“这个系统具身。”按 E1、E2 判定。
+\item \textbf{系统层}：“具身智能系统”“具身智能机器人。”按定义 2 判定，要求两支都成立。
+\item \textbf{组件层}：“具身智能大模型”“具身智能芯片”“具身智能操作系统。”谓词只对系统与环境的关系成立，加在组件上不成立。
+\item \textbf{产业层}：“具身智能产业”“具身智能专业。”属于产业分类与学科设置，没有判据。
+\end{itemize}
+四个层级的用法见于同一批文本。《北京具身智能科技创新与产业培育行动计划（2025—2027 年）》把“具身智能”用作修饰语，用于大模型、芯片、操作系统、机器人与产业集群 \cite{beijing2025}；银河通用把一个模型称为“具身大模型” \cite{galbot}；一份企业案例稿把一个动作模型称为“具身模型”，同一篇文章又把它界定为“世界动作模型” \cite{liberai2026}。组件层的用法把只对系统与环境的组合成立的谓词归给了系统的部件，即 3.3 节的整体错置。产业层的用法没有判据可言，但它的合法性会被移用到谓词层：词进入政府工作报告之后，“X 是不是具身智能”显得像是存在官方答案的问题。
+
+\subsection{四种滑动}
+
+《四个概念，四种类型》归纳的三种非法滑动在具身智能话语中各有对应形态 \cite{yu2026four}，另有一种为该话语特有。
+
+\textbf{操作主义}（测量冒充定义）：演示与基准得分冒充能力。机器人视频成为判定依据。研究者对此已有批评。陈博远认为“所有 demo 中展现的泛化性都是极其有限的”，并援引其导师的话：“可以以结果为导向的科研，但不可以网红视频为导向” \cite{chenby2024}；Brooks 与 Goldberg 的批评见 6.4 节。
+
+\textbf{部分谬误}（机制冒充能力定位）：把关系属性的某一局部当作它的所在。有两种形态。一是身体冒充具身——有身体即具身。智库文本已作区分：“具身智能不等于人形机器人” \cite{caict2024}。二是模型冒充系统——把系统层的谓词归给组件，即《四个概念，四种类型》所称的整体错置 \cite{yu2026four}，见 3.2 节。
+
+\textbf{判据升格}（工程判据冒充概念内容）：架构描述被用来回答“具身智能是什么”。陈学东的概括是“数据是动力，模型是大脑，硬件是身体” \cite{chenxd2026}；Agnes AI 以“LLM 是大脑，Agnes Sys1 是小脑，Harness 是记忆，MHS 是身体”描述其框架 \cite{agnesrepo2026,agnestr2026}；政策文件也以“具身智能‘大脑’大模型”“具身智能‘小脑’技能模型”为条目名称 \cite{beijing2025}；企业的统计口径把规格写进名称的界定，优必选的公司简介以“非遥控非玩具，大脑芯片算力$\geq$200T，身高$\geq$160cm”界定“全尺寸具身智能机器人” \cite{ubtech}。国际文献中与之对应的是双系统架构：GR00T N1 把视觉—语言模块称为 System 2，把生成动作的扩散 Transformer 模块称为 System 1 \cite{nvidiagroot2025}。这类描述可以帮助说明一个实现，不能给出定义。判断一个描述是否构成定义，看它有没有判别力：大脑、小脑、身体、记忆四项，在纯软件智能体上同样可以逐一指认。
+
+\textbf{合取混淆}（该话语特有）：把合取一支的成立读作两支都成立。有两个方向——由身体推智能，由智能推具身。第 6 节给出两个方向的证据。
+
+\subsection{定义语料普查}
+
+定义的思想来源有二。其一是无表征智能的传统：智能产生于身体与环境的交互，而非符号运算 \cite{brooks1991,pfeifer2006}。其二是认知科学的具身认知传统：认知以身体为主体，与身心二分相对 \cite{varela1991,dreyfus1992,newen2018,shapiro2026}。张钹对离身智能的批评直接承接后一传统 \cite{zhangbo2025}。英文侧可以征引的定义句列于表 4。
+
+\begin{table}[htbp]
+\centering
+\caption{英文定义语料（译文为本文所译）}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.3cm}Y>{\raggedright\arraybackslash}p{2.6cm}}
+\toprule
+出处 & 定义句 & 句式 \\
+\midrule
+--- & --- & --- \\
+Liu 等（2025）\cite{liu2024survey} & 具身智能的概念最初由艾伦·图灵 1950 年的具身图灵测试引出，该测试判定的是智能体能否显示出这样的智能：不限于解决赛博空间中的抽象问题，而且能够应对物理世界的复杂性与不可预测性 & 判定 \\
+Feng 等（2025）\cite{feng2025} & 只解决数字世界中抽象问题的智能体，通常被界定为离身人工智能；也能与物理世界交互的智能体，被视为具身人工智能 & 按环境划界；另称“实现通用人工智能的智能系统范式” \\
+Liu、Guo 与 Cangelosi（2025）\cite{liu2025csur} & 具身智能是一种计算路径：考虑智能体与其环境的紧密耦合——以智能体自身的身体、感知运动系统与大脑的约束为中介——来设计并理解具身且处于情境中的智能体的智能行为 & 计算路径 \\
+Sun 等（2024）\cite{sun2024} & 具身智能在现实场景中把物理交互能力与认知计算结合起来，为实现通用人工智能提供了一条有希望的路径 & 能力的结合 \\
+Wang 与 Sun（2025）\cite{wangsung2025} & 具身通用人工智能是具身人工智能的一种形态，表现出类人的交互能力，并能以人类水平的熟练度成功完成多样的开放式现实任务 & 能力；未及具身人工智能本身 \\
+英伟达 embodied AI 词条 \cite{nvglossary} & 具身人工智能指把人工智能集成到物理系统中，使它们能够与物理世界交互；这类系统包括通用的机器人、人形机器人、自动驾驶汽车，甚至工厂与仓储设施 & 集成 \\
+英伟达 physical AI 词条 \cite{nvglossary} & 物理人工智能使自主机器——例如工厂中的机器人与自动驾驶出租车——能够在物理世界中感知、理解并执行复杂动作 & 能力 \\
+CSET（2026）\cite{cset2026} & 物理人工智能使自主机器具备认知推理与空间知识，能够从交互中学习并实时响应 & 能力；含时限 \\
+花旗研究（2025）\cite{citi2025} & 物理人工智能指任何从人工智能中学习并应用人工智能的物理过程 & 物理过程 \\
+麦肯锡（2026）\cite{mckinsey2026} & 物理人工智能系统可以具身于单台机器，也可以嵌入多台设备或基础设施；它们共同的规定能力是，用感官输入与习得的环境表征在物理世界中决策并行动，人工干预减到最少 & 能力；含人工干预 \\
+路透社（2026）\cite{reuters2026} & 所谓具身人工智能——能够在物理世界中感知、决策与行动的机器人 & 能力 \\
+Live Science（2024）\cite{livescience2024} & 具身人工智能通常把传感器与机器学习结合起来，对真实世界的数据作出响应 & 传感器与学习的结合 \\
+李飞飞（2025）\cite{feili2025} & 空间智能是语言之外的前沿，是把想象、感知与行动联系起来的能力 & 能力 \\
+Duan 等（2022）\cite{duan2022} & 从“互联网人工智能”转向“具身人工智能”：算法与智能体不再从网上整理好的图像、视频与文本中学习，而是像人一样以第一人称感知，通过与环境的交互学习 & 范式转移；研究场所在仿真 \\
+Savva 等（2019）\cite{savva2019} & 具身智能研究平台：在照片级真实的高效三维仿真中训练具身智能体（虚拟机器人） & 平台；具身指虚拟身体 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+英文定义句的来源有四类：学术综述、厂商词条、智库与咨询机构报告、新闻媒体与大众科景。
+
+中文侧可以征引的定义句列于表 5。
+
+\begin{table}[htbp]
+\centering
+\caption{中文定义语料}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.3cm}Y>{\raggedright\arraybackslash}p{2.6cm}}
+\toprule
+出处 & 定义句 & 句式 \\
+\midrule
+--- & --- & --- \\
+郑南宁等（2026）\cite{zheng2026} & 具身智能是一种基于物理实体对环境进行感知与适应性交互，进而理解问题、产生智能行为的智能系统……是实现 AI 发展目标的关键路径之一 & 智能系统；兼路径 \\
+中国计算机学会术语条目（卢策吾、王鹤，2023）\cite{ccf2023} & 具身智能是指一种基于物理身体进行感知和行动的智能系统，其通过智能体与环境的交互获取信息、理解问题、做出决策并实现行动，从而产生智能行为和适应性 & 智能系统；信息框另称“人工智能研究范式” \\
+邹德宝（2024）\cite{kejiribao2024} & 具身智能是人工智能的一个重要分支，它强调智能体与其所处的物理环境紧密交互，通过人形机器人等智能实体实现感知、决策和行动 & 分支；载体写为人形机器人 \\
+中国信通院等（2024）\cite{caict2024} & 具身智能是指通过机器人等物理实体与环境交互，能进行环境感知、信息认知、自主决策和采取行动，并能够从经验反馈中实现智能增长和行动自适应的智能系统 & 智能系统 \\
+国际电信联盟（2025）\cite{itu2025} & 具身智能指与物理实体融合的人工智能，能自主与物理世界交互并适应环境 & 人工智能 \\
+张钹（2025）\cite{zhangbo2025} & 具身智能则认为人类的智能行为不仅依赖大脑的思考，还需要通过与物理环境的交互来进行学习和决策 & 主张 \\
+谭铁牛（2025）\cite{tantn2025} & 具身智能既是人工智能的一种形态，更是人工智能可持续发展的必由之路 & 形态；兼路径 \\
+张伟男、刘挺（2025）\cite{zhangwei2025} & 具身智能是一种具有物理载体的系统型功能，其以人工智能、机器人、机械制造及设计等为理论和技术基础 & 系统型功能 \\
+陈学东（2026）\cite{chenxd2026} & 具身智能是一种具备物理实体的智能体，能够通过感知与交互形成对环境的认知，适应环境并完成相应物理任务 & 智能体 \\
+张峰（2025）\cite{zhangfeng2025} & 具身智能是拥有物理身躯的人工智能系统，通过物理实体与物理世界的交互，以实现智能提升和自主行为 & 人工智能系统 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+姚期智未给单句定义；据人民网报道，他的框架主张是“要从模仿走向推理”，“未来应把推理、规划、控制置于同一闭环框架中” \cite{yao2025}。张伟男与刘挺在给出定义前指出，“现在还没有一个被普遍认可的定义” \cite{zhangwei2025}。十条定义句不是十家独立的主张：张伟男与刘挺的定义句注明引自中国计算机学会的术语条目 \cite{zhangwei2025,ccf2023}。著录上另有三种情形须说明：陈学东一句出自记者的间接引语，张峰一句出自未经本人审阅的速记稿，谭铁牛一句出自未经本人确认的演讲整理稿 \cite{chenxd2026,zhangfeng2025,tantn2025}。表 5 之外，同一家机构在不同年度给出不同的定义：信通院 2024 年称它为智能系统，2025 年以“智能闭环”为核心，2026 年称它为“有身体”的人工智能 \cite{caict2024,caict2025,caict2026}。定义的不稳定不只存在于机构之间。
+
+引言所列的四处分歧，在中文语料中各有一个位置。
+
+载体范围的分歧，来自环境类与任务范围未加声明。有的定义句把载体直接写成人形机器人——“通过人形机器人等智能实体实现感知、决策和行动” \cite{kejiribao2024}；智库文本则强调任意物理实体，信通院的报告明言“具身智能不等于人形机器人”，并把 L4 级自动驾驶也算在内 \cite{caict2024}。两种说法在本框架下可以并存，差别在默认的环境类与任务范围。
+
+上位概念的分歧，来自把词的层级写进了定义。同一篇会议报道中，具身智能既是“人工智能的一个重要分支”，又是“学科交叉的新前沿” \cite{ia2025}：前者说的是谓词层与系统层，后者说的是学科设置；“未来产业”说的是产业层 \cite{govreport2025}。
+
+定义句式的分歧，对应四个层级加一条路线。“智能系统”与“智能体”是系统层，“系统型功能”是谓词层，“人工智能研究范式”与“必由之路”是路线。
+
+智能来源的分歧，在于把合取的哪一支视为定义性。张钹强调智能在交互中产生：“人类的智能行为不仅依赖大脑的思考，还需要通过与物理环境的交互来进行学习和决策，最后通过感知将执行的结果反馈到大脑，形成闭环” \cite{zhangbo2025}。陈学东的定义以物理实体为载体：“具备物理实体的智能体，能够通过感知与交互形成对环境的认知” \cite{chenxd2026}；“数据是动力，模型是大脑，硬件是身体”一句，本文读作智能由模型带来、硬件承担执行 \cite{chenxd2026}。前者把智能的来源系于具身，后者把具身当作智能的载体。本文的定义对这一分歧保持中立：两条条件只判定具身，不判定智能从哪里来。
+
+合取结构在既有文本中已有先例。信通院把宠物机器人与 L4 级自动驾驶说成“本质上都同时具备具身和智能两种属性”，并以“本体+环境+智能”三要素界定内涵 \cite{caict2024}；张伟男与刘挺的定义把物理载体与系统型功能并列 \cite{zhangwei2025}；Sun 等的摘要称具身智能“把物理交互能力与认知计算结合起来” \cite{sun2024}。本文把这些先例写成定义。
+
+英文语料与中文语料相比，分歧有对应之处，也有两点不同。
+
+与中文语料对应的有三处。载体范围：厂商词条把工厂与仓储设施也算作具身人工智能系统，咨询机构允许物理人工智能嵌入基础设施 \cite{nvglossary,mckinsey2026}，智库以有无物理形体区分两个术语 \cite{cset2026}，耦合传统的综述把虚拟身体包括在内 \cite{liu2025csur}。上位概念：同一对象被称作“智能系统范式” \cite{feng2025}、“计算路径” \cite{liu2025csur} 与“通往通用人工智能的路径” \cite{sun2024}。智能来源：耦合传统把智能的来源系于智能体与环境的耦合，集成传统把它系于人工智能向物理系统的植入 \cite{nvglossary}。
+
+与中文语料不同的有两处。其一，英文综述多以按环境划界来定义：只解决数字世界中抽象问题的是离身人工智能，也能与物理世界交互的是具身人工智能 \cite{feng2025,liu2024survey}。这种定义只写了合取的具身一支，能力一支整个省略。其二，时限条件只出现在智库的定义里 \cite{cset2026}，学术综述的定义句都不涉及实时性；把人工干预写进定义的只有咨询机构一家 \cite{mckinsey2026}。判据的空缺在英文文献中同样存在。
+
+定义的空缺正在被填补，方向却不是本文的方向。2026 年 4 月，《自然·机器智能》的社论称，多个学科的框架正汇聚到同一个问题上：一个系统如何才能不只是预测、模拟或推理世界，而是在其中以智能的方式物理地行动 \cite{nmi2026}。同年 10 月，一部十二章的 physical AI 专著给出定义（定义 1.1）：“物理人工智能是人工系统的一种能力——感知物理环境状态，维护任务相关的物理关系与行动后果的表征，经物理接口选择并执行干预，并利用反馈在物理、运行与计算的约束下达成目标”；同一章明确把它与具身人工智能区分开，“具身人工智能强调智能体的身体如何塑造感知与行动，物理人工智能强调对真实物理过程的闭环干预” \cite{monograph2026}。同期的单句刻画还有两种：具身人工智能是由智能体与其环境经主动感知、具身认知与行动交互构成的智能系统 \cite{tong2026}，是主动与物理环境交互的人工智能 \cite{ma2026}。这些定义与刻画以单一谓词为主——交互、闭环或耦合——都不把具身与智能写成两个独立谓词的合取，也不声明环境类。经对近年题名含具身智能或物理人工智能的论文逐条排查与显式定义检索，与本文同构的定义尚未出现。
+
+\section{判据：四项检测}\label{sec:s4}
+
+定义给出条件，判据给出程序。四项检测由两条条件推出，每一项给出操作、判读与限度。四项检测的要素在文献中各有来源（4.5 节）；本文把它们从两条条件推出，写成可执行的程序。国际层面的评估程序也在制定之中，IEEE 的具身智能能力评估标准尚未发布 \cite{ieee2025}。
+
+\subsection{闭环检测（E1）}
+
+操作分三步。断开执行通路：锁定执行器。扰动物理量：改变任务相关的摩擦、质量或光照，同时保持符号记录不变。切断反馈：遮蔽传感器。
+
+判读：执行器锁定后任务仍被判定完成，则结果由符号决定，E1 不成立。任务结果随物理扰动改变，并且改变可以追溯到被扰动的物理量，则 E1 的后果条件成立。传感器遮蔽后系统的行动序列不变，则反馈不来自物理测量，E1 不成立。
+
+限度：本项检验执行通路与反馈通路是否经过物理世界，不检验系统的响应是否及时；后者由暂停检测补足。
+
+\subsection{换身检测（E1，身体一侧）}
+
+操作：保持指令不变，改变身体的物理参数——质量分布、摩擦特性或传动时延；比较执行结果。
+
+判读：相同的指令随身体参数得到不同的执行结果，则行动的后果由物理定律决定，E1 在身体一侧成立。指令的解释与执行结果都不随身体改变，则身体只是外围设备，闭环经过的是指令的语义。
+
+说明：另可保持策略、更换身体，比较任务成功率。成功率下降说明能力依赖这具身体，这是能力一支的性质，不进入 E1 的判定；它也不说明身体分担了多少计算，后者属于实现层。
+
+\subsection{回滚检测（E1 的推论）}
+
+操作：令一次行动失败，考察能否把环境恢复到行动之前的状态。
+
+判读：恢复需要物理代价——时间、工件或设备的损耗——则物理闭环的不可逆一面成立。恢复只需要一条指令，则闭环在数字环境或仿真里。
+
+说明：仿真可以回滚，所以仿真不是物理闭环。本项是 2.2 节结论的检测形式。
+
+\subsection{暂停检测（E2）}
+
+操作：在系统的决策环节人为加入时延 $T$，测量任务成功率随 $T$ 的变化；记成功率开始下降时的加入量为 $T^{*}$。
+
+判读：环境对该任务的特征时间，估取系统原有响应时延与 $T^{*}$ 之和。环境的特征时间与系统的响应时延之比，称为\textbf{时限裕度}。裕度大于一，系统相对该环境具身；裕度小于一，系统的响应慢于环境的过程，系统不相对该环境具身。
+
+说明：裕度是连续量，“弱具身”因此有一个定量读法。Hoffmann 与 Patni 判定当前的机器学习机器人“只是弱具身” \cite{hoffmann2025}。在本文框架下，这一判断可以读作裕度接近一：相对准静态环境具身，相对动态环境不具身。这是本文给出的一种读法，不是对原作者的转述。实时性也见于政策智库的定义：CSET 把 physical AI 界定为“使自主机器具备认知推理与空间知识，能够从交互中学习并实时响应” \cite{cset2026}。产业文本把控制频率写入系统说明：Figure 的 Helix 以独立的实时进程运行其 System 1，维持上肢平滑动作所需的 200 Hz 控制回路 \cite{figure_helix}。
+
+\subsection{与既有判据的关系}
+
+E1 与 E2 各有控制工程上的先例。信息物理系统被界定为计算与物理过程的结合，其中物理过程影响计算、计算又通过反馈回路控制物理过程 \cite{lee2008}；这是 E1 的工程表述。实时系统的经典定义是，其正确性不仅取决于计算的逻辑结果，也取决于结果产生的时间 \cite{stankovic1988}；这是 E2 的工程表述。两项定义的对象是系统的可靠性，不涉及能力；具身一支可以脱离能力一支单独判定，在工程上本有先例。
+
+Zador 等提出的“具身图灵测试”是行为学的判据：人工智能的动物模型——无论是机器人还是仿真中的模型——行为与活体对应物不可区分，即为通过 \cite{zador2023}。仿真中的模型也被纳入，说明它判定的是能力一支，不是具身一支。
+
+实现层的两个传统各有自己的度量。形态计算传统 \cite{muller2017} 以形态促进新任务学习的能力来度量“形态智能” \cite{gupta2021}，身体、大脑与环境耦合的传统以三者协同为具身智能的内容 \cite{liu2025csur,pfeifer2007}。它们说明智能如何获得（2.2 节）；本文的定义对两者都不作要求。
+
+Hoffmann 与 Patni 的判据是一份六项清单。第一项是行为不在大脑或控制器之内，而在控制器、身体与环境的闭环交互之中；其余五项是身体形态有助于控制、传感器形态有助于感知等性质。4.4 节援引的“只是弱具身”的判断即据此作出 \cite{hoffmann2025}。第一项与 E1 相合，其余五项在本文的定义中归入实现层。清单各项不在同一层上，这是两份定义给出不同判定的原因。
+
+Hellström 等给出两条程度轴：身体的程度，取智能体能够感知与影响的环境方面所占的比例；交织（intertwining）的程度，取智能体以感知、思考与行动相互依赖的方式所触及的环境方面所占的比例。在物理世界中感知与行动的智能体是物理地具身，在虚拟世界中感知与行动的智能体是虚拟地具身；不具备身体的智能体通过人类代行，称为“代理具身” \cite{hellstrom2024}。两条程度轴与本文的时限裕度都是连续量，对象不同：前两条刻画智能体对环境的覆盖面与依赖方式，裕度刻画系统与环境的时间关系。“代理具身”与虚拟地具身都不满足 E1。
+
+Embodied Web Agents 一文把两类智能体并置：一类检索并推理网上的数字信息，一类经具身的感知、规划与行动同物理世界交互，兼具两者的很少 \cite{ewa2025}。E1 与闭环检测为这条分界给出了条件与程序。
+
+Paolo 等的立场文以感知、行动、记忆、学习四个要件刻画具身人工智能，主张它是“追求通用人工智能的下一个根本步骤”；文中的完全具身的智能体须把握“环境中事态与行动背后的因果，无论环境是数字的还是物理的” \cite{paolo2024}。四个要件在软件智能体上同样成立，环境也明言包括数字的，因此这一刻画对具身没有判别力。
+
+Wang 与 Sun 只给具身通用人工智能下了定义——具有类人交互能力、能以人类水平的熟练度完成多样的开放式现实任务的具身人工智能——并把它分为五级 \cite{wangsung2025}。分级的是能力一支，与具身一支的判定无关。
+
+\section{区别}\label{sec:s5}
+
+\subsection{与智能}
+
+具身智能是合取，两支互不蕴含。预编程工业机器人相对产线具身，能力范围由程序给定；过程控制器具身，能力范围是控制律的范围。大模型相对数字环境有智能；它没有物理闭环，相对任何物理环境都不具身。前者具身一支成立而能力一支很窄，后者能力一支成立而具身一支不成立。两支独立，所以判定一个系统是否具有具身智能，要求两支的证据分开提交。
+
+\subsection{与机器之心}
+
+《两个不同的目标》把机器之心与人工智能解绑 \cite{yu2026two}；《机器之心需要具身吗》一文论证“具身不是机器之心的必然要求，环路才是”——机器之心需要的是闭环的实践，身体只是闭环的一种实现 \cite{yu2026blog}。该论证与本定义不冲突，因为两个谓词对环境项的取值不同。机器之心要求环境项包含社会实践，数字的与物理的都可以；具身智能要求环境项是物理世界。
+
+由此得到两个方向的不蕴含。工业机器人具身而没有机器之心；一个只在数字环境中运行的系统，按《两个不同的目标》的标准可以有机器之心而不具身。
+
+Beaulieu 与 Kriegman 的论证针对“具身”的另一种关系。他们主张，严格说来不能在物理空间中移动的计算机程序，在合适的条件下可能比能行走与说话的机器人更具身；具身不能是拥有躯体这一事实，也不能是躯体在空间中的运动，而是“对该躯体的功能、设计与完整的持续协商”，也就是参与构成这具躯体 \cite{beaulieu2023}。这一判据说的是系统与自身构成的关系，本文的 E1、E2 说的是系统与环境的关系。两个谓词对象不同，不相互竞争。
+
+\subsection{与世界模型}
+
+《世界模型》判定世界模型是功能概念，可以落在四个位置 \cite{yu2026wm}。在具身系统里，世界模型是组件，用于在内部推演环境的变化并规划行动。两个概念互不蕴含：世界模型可以脱离具身系统存在，仿真环境位置即是一例；具身系统也可以不含世界模型，预编程工业机器人即是一例。只有世界模型而没有行动与物理反馈的系统不满足 E1。
+
+仿真训练中的“仿真到现实”问题位于两个概念的交界处。训练在模拟环境位置完成，部署时须换到物理闭环；两条条件在换位时重新判定。仿真中的表现能否预测现实中的表现，因任务而异 \cite{kadian2020,chebotar2019}；换位前后的差距，来自模拟环境与物理闭环的差别。
+
+\subsection{与通用人工智能}
+
+通用人工智能是参照系概念，其判定以参照集的声明为准 \cite{yu2026four}。把具身智能与通用人工智能绑在一起，是常见的一类说法。综述称具身智能“对实现通用人工智能至关重要” \cite{liu2024survey}，另一篇综述称之为“实现通用人工智能的智能系统范式” \cite{feng2025}；中国计算机学会的术语条目称“物理交互能力的缺失成为了当今通向通用人工智能的瓶颈” \cite{ccf2023}；张钹称具身智能将使人工智能“向通用人工智能迈进” \cite{zhangbo2025}。这些说法可以概括为一种主张：具身智能是通往通用人工智能的必由之路。这一主张的直白形式见于国内报道：“具身智能是通往通用人工智能的必由之路，并且只有人形机器人才能实现通用人工智能” \cite{jiemian2024}。
+
+这一主张有两个读法。作为能力主张，它可以成立：参照系如果包含物理实践，通用人工智能就须在物理实践上有能力。作为路线主张——通用人工智能必须自己有身体——它不是概念推论。能力可以通过指挥具身系统获得，如同人通过工具与他人作用于物理世界。主张者须另行论证“能力必须由系统自身的闭环实现”。
+
+判据方面，具身的判据是局部的——四项检测与时限裕度；通用人工智能的判定是总体的——参照集的声明。进步转账错觉 \cite{yu2026two} 在这一轴上的形态是：演示、融资与上市被记作通用人工智能的里程碑。局部指标上的进步不可转账，因为两组判据不可通约。
+
+\section{实证：两支分别成立的用例}\label{sec:s6}
+
+\subsection{具身成立、能力不足}
+
+信通院 2026 年的报告给出一组数据：“月均开机天数不足 10 天的情况并不少见”；“国内多数企业仍集中于 $\pi_0$、$\pi_{0.5}$ 和 OpenVLA 等较早开放模型进行复现和微调实验，这些基座落后前沿闭源模型约两代” \cite{caict2026}。该机构上一年度的报告写道，“以端到端视觉语言动作模型（VLA）为代表的主流架构是否存在物理智能涌现尚不确定” \cite{caict2025}。国际数据机构与媒体的记录与之相符：IDC 称超过 85\% 的部署集中在表演、教育、数据采集与导览场景 \cite{idc2026}；路透社援引业内人士的话说，人形机器人“缺乏通用工作所需的智能”，人们看到的许多东西“是伪装成工作的跳舞” \cite{reuters2026}。宝马工厂一项持续 11 个月的部署，披露的成功率与人工干预次数是目标值，不是结果 \cite{figure_bmw}。高盛 2022 年的判断可以读作两支的分离：有的人形机器人掌握了移动与敏捷动作，有的能应对认知上的挑战，“没有一种能两者兼备” \cite{goldman2022}。
+
+这些系统在真实环境中闭环，时间由环境规定，E1、E2 成立。不足的是能力一支：开机不足，说明的是这些系统在目标环境类上尚不能持续使用。按 3.3 节的合取混淆，E1、E2 的成立被读作两支都成立，这类系统于是整体被称作“具身智能”。
+
+\subsection{能力成立、具身不成立}
+
+3.2 节举过的银河通用“具身大模型”是一例 \cite{galbot}；Figure 把 Helix 称为“用于具身智能的人工智能系统” \cite{figure_seriesc}。EmbodiedBench 把多模态大模型直接作为具身智能体评测，任务在仿真环境中完成 \cite{yang2025embodiedbench}。
+
+这些用法里，能力一支有或多或少的证据，具身一支按 E1 不成立。
+
+\subsection{一个系统，两半判定}
+
+Agnes AI 的技术报告在自建基准上给出 100 条任务：40 条是桌面软件任务，60 条是分场地的物理作业，包括机床控制、装配、场内物流、巡检以及水、电、冷链的控制 \cite{agnestr2026}。按本文的定义，同一个系统在这 100 条任务上得到两种判定。桌面任务那 40 条，闭环经过软件，不具身；物理作业那 60 条，闭环经过机床、装配与物流设备，相对这些环境具身。报告把两部分合计为一个总成功率。这一合计即是合取混淆的一个样本：物理作业一半的成立被计入了整个系统。该基准与评分均为自评，本文只把它用作判定方法的示例，不作为能力证据。
+
+\subsection{批评的落点}
+
+对当前人形机器人的批评，多数落在能力一支。Brooks 指出，Figure 与特斯拉押注于一点：从大量人手动作的视频中学习，足以让机器人学会灵巧操作；他本人的判断是“只收集视觉数据不是收集正确的数据”，不理解触觉的构成、不能测量、存储与回放触觉就教机器灵巧操作，“很可能是愚蠢的，而且是代价高昂的错误” \cite{brooks2025}。Goldberg 把当前的宣传称为炒作，理由是它“远远领先于这一领域研究者所熟悉的机器人能力”；他和同事“只是想重置预期”，以免造成一场可能引发强烈反弹的泡沫 \cite{goldberg2025}。信通院预期“产业的火热与落地应用缺失之间的矛盾有可能会引发新一轮泡沫” \cite{caict2025}。彭博社 2026 年 5 月的文章以《人形机器人是人工智能炒作周期的下一阶段》为题 \cite{bloomberg2026}。《麻省理工科技评论》的调查落在另一支上：人形机器人的演示与家用产品背后，远程操作往往不被披露，其风险是“把隐藏的人工劳动误认为机器智能” \cite{mittr2026}。这些批评指向学习信号、泛化与预期管理，都属于能力一支；它们不否定具身一支的成立。远程操作不披露一项，按表 2 的“人代行”一行，则连具身一支的判定也要随运行方式重新作出。
+
+落在具身一支的批评也有。Hoffmann 与 Patni 追问当前的机器学习机器人是否真的具身，判定它们只是弱具身 \cite{hoffmann2025}。两类批评对应两个谓词，不能互相替代：前一类不构成对具身的质疑，后一类不构成对能力的评价。两支分开评估，各归其位。
+
+\section{证伪条款、准入协议与适存条款}\label{sec:s7}
+
+\subsection{证伪条款}
+
+本文的主张写成可以被经验反驳的形式。
+
+\begin{enumerate}
+\item \textbf{E1 的充分性}：若工程界与学术界一致把无环境反馈的预编程系统判为不具身，且理由是缺乏感知与行动的耦合而非能力不足，则 E1 须增补反馈条件，表 2 对预编程工业机器人与过程控制器的判定作废。
+\item \textbf{时限条件}：若物理环境的特征时间与具身判定无关——加入任意长的决策时延都不改变物理任务的成败——E2 作废。
+\item \textbf{合取结构}：若“具身”与“智能”被证明在概念上不独立，凡具身者必有智能或凡智能者必具身，合取混淆的诊断作废。
+\item \textbf{四项检测}：若检测在已知系统上给出与工程实践系统性相反的判定，如判端到端策略不具身而判软件智能体具身，检测作废；定义保留，程序重写。
+\item \textbf{类型定位}：若学界收敛于结构性定义——以模型架构或形态计算量定义具身智能——且其判别力不低于本文，“能力概念的受限情形”这一论断削弱。
+\item \textbf{组件层谓词}：若出现“具身”可以合法归属于模型或部件的严格定义与判据，《四个概念，四种类型》为“组件级能力”预留的修订条件在此成立 \cite{yu2026four}，“模型冒充系统”的诊断作废。
+\item \textbf{转账}：若具身智能的某项内部指标被证明与通用人工智能的总体判定同构，5.4 节的区分作废。
+\end{enumerate}
+\subsection{准入协议}
+
+新案例按三问定位，不需要修改定义。
+
+第一问，闭环经过物理世界吗。做闭环检测与换身检测。未通过者归入软件智能体或仿真智能体，或者只是命名。
+
+第二问，时间由谁规定。做暂停检测，求时限裕度，并声明该系统相对哪个环境类具身。
+
+第三问，两支的证据分开提交了吗。具身一支看四项检测，能力一支看能力范围。只提交一支而称“具身智能”的，是合取混淆。
+
+三问之后再看词落在哪一层（3.2 节）：具身一支成立只支持谓词层的“具身”；两支都成立才支持系统层的“具身智能”；组件层的称呼只是命名。
+
+三个案例示范这一协议。Agnes Harness 在软件任务与物理作业上分属两种判定（6.3 节）。大模型逐步遥控的人形机器人通过第一问，在第二问得到“相对准静态环境具身”的限定。“具身智能大模型”未通过第一问，其称呼属于组件层的命名。三个案例都未改动定义的任何一条。
+
+三问无法定位的案例是本文的反例：它触发证伪条款，也是下一次修订的入口。
+
+\subsection{适存条款}
+
+本定义绑定的是谓词，不是词。“具身智能”如果完成语义漂移，固化为产业名或组件名，两支的判定条件不随词漂移：任何可用的具身系统，运行时的闭环都经过物理世界，时间都由环境规定。届时谓词可以退守既有学名——物理闭环控制、信息物理系统 \cite{lee2008}——本文的分析随谓词迁移。
+
+\section{结语}\label{sec:closing}
+本文的工具取自 AGI 人本拟合论：概念类型学与三种非法滑动来自《四个概念，四种类型》 \cite{yu2026four}，定义方法、位置分析与命名竞争论断来自《世界模型：定义、澄清、区别与边界》 \cite{yu2026wm}，进步转账错觉来自《两个不同的目标》 \cite{yu2026two}。具身智能在这个框架里的位置是明确的：它是能力概念在物理环境类上的受限情形，以两个独立谓词的合取成词。混淆不在词所指的技术，在合取——证明了一支，就被读作证明了两支。把环境类声明出来，把两支的证据分开提交，“具身智能”就从一个可以随意认领的名称，成为一个可以判定的谓词。
+
+\begin{thebibliography}{110}\small
+
+\bibitem{govreport2025}
+国务院. 政府工作报告（2025 年）. 2025-03-05. \url{https://www.gov.cn/yaowen/liebiao/202503/content\_7013163.htm}
+
+\bibitem{govreport2026}
+国务院. 政府工作报告（2026 年）. 2026-03-05. \url{https://www.gov.cn/yaowen/liebiao/202603/content\_7062625.htm}
+
+\bibitem{itu2025}
+国际电信联盟. ITU-T F.748.66 (12/2025): Requirements and Framework for Embodied Artificial Intelligence Systems（具身智能系统框架及能力要求）. 批准 2025-12-14.
+
+\bibitem{caict2026}
+中国信息通信研究院人工智能研究所, 清华大学电子工程系, 具身智能测试实验室. 具身智能发展报告（2026 年）. 2026-10. \url{https://www.caict.ac.cn/kxyj/qwfb/ztbg/202610/P020261024380797577424.pdf}
+
+\bibitem{yicai2025}
+林靖. 8 所双一流高校超常布局“具身智能”专业. 第一财经, 2025-11-14. \url{https://www.yicai.com/news/102912814.html}
+
+\bibitem{japan2026}
+{\jafont 内閣府. 人工知能基本計画}（人工智能基本计划）. {\jafont 閣議決定}, 2025-12-23. \url{https://www8.cao.go.jp/cstp/ai/ai\_plan/aiplan\_20251223.pdf}
+
+\bibitem{korea2026}
+{\hangulfont 과학기술정보통신부}（韩国科学技术信息通信部）. {\hangulfont 물리적 인공지능(피지컬 AI) 핵심 경쟁력 확보 전략}（物理人工智能核心竞争力确保战略）. 2026-07-01.
+
+\bibitem{eu2025}
+European Commission. Apply AI Strategy. COM(2025) 723 final, 2025-10-08.
+
+\bibitem{uk2025}
+UK Robotics Growth Partnership. Smart Machines Strategy 2035. 2025-02-11.
+
+\bibitem{aiaap2025}
+The White House. America's AI Action Plan. 2025-07. \url{https://www.whitehouse.gov/wp-content/uploads/2025/07/Americas-AI-Action-Plan.pdf}
+
+\bibitem{ces2025}
+Caulfield B. CES 2025: AI Advancing at Incredible Pace, NVIDIA CEO Says. NVIDIA Blog, 2025-01-06. \url{https://blogs.nvidia.com/blog/ces-2025-jensen-huang/}
+
+\bibitem{figure_f03}
+Figure AI. F.03 at BMW. 2026-06-30. \url{https://www.figure.ai/news/f-03-at-bmw}
+
+\bibitem{morganstanley2025}
+Morgan Stanley. Humanoids: A \$5 Trillion Market. 2025-05-14. \url{https://www.morganstanley.com/insights/articles/humanoid-robot-market-5-trillion-by-2050}
+
+\bibitem{idc2026}
+IDC. Humanoid Robotics Commercialization Trends 2026. 2026-04-23. \url{https://www.idc.com/resource-center/blog/humanoid-robotics-commercialization-2026/}
+
+\bibitem{reuters2026}
+Chen L, Baptista E, Park J. China Can Build Kung Fu-Fighting Robots. But It Can't Get Them to Do Factory Work. Reuters Investigations, 2026-08-27. \url{https://www.reuters.com/investigations/chinas-humanoid-robots-arent-smart-enough-take-your-job-yet-2026-08-27/}
+
+\bibitem{cset2026}
+VerWey J. Physical AI: A Primer for Policymakers on AI-Robotics Convergence. Center for Security and Emerging Technology, 2026. DOI: 10.51593/20250023.
+
+\bibitem{nvidia2024}
+NVIDIA. NVIDIA Announces Project GR00T Foundation Model for Humanoid Robots and Major Isaac Robotics Platform Update. 2024-03-18. \url{https://nvidianews.nvidia.com/news/foundation-model-isaac-robotics-platform}
+
+\bibitem{nvglossary}
+NVIDIA. What is Embodied AI?; What is Physical AI? NVIDIA Glossary. \url{https://www.nvidia.com/en-us/glossary/embodied-ai/;} \url{https://www.nvidia.com/en-us/glossary/generative-physical-ai/}
+
+\bibitem{guofa2025}
+国务院. 关于深入实施“人工智能+”行动的意见（国发〔2025〕11 号）. 2025-08-26. \url{https://www.gov.cn/zhengce/zhengceku/202508/content\_7037862.htm}
+
+\bibitem{yu2026four}
+余玉桂. 四个概念，四种类型：智能、人类智能、人工智能、通用人工智能的层次、边界与转译协议. Zenodo: 10.5281/zenodo.24096361, 2026.
+
+\bibitem{yu2026wm}
+余玉桂. 世界模型：定义、澄清、区别与边界. Zenodo: 10.5281/zenodo.24384106, 2026.
+
+\bibitem{zheng2026}
+郑南宁, 杨勐, 姜维周, 孙宏滨, 丁宁. 具身智能发展趋势与展望. 中国工程科学, 2026, 28(2): 1–13. DOI: 10.15302/J-SSCAE-2025.07.019
+
+\bibitem{pfeifer2006}
+Pfeifer R, Bongard J. How the Body Shapes the Way We Think: A New View of Intelligence. MIT Press, 2006.
+
+\bibitem{muller2017}
+Müller V C, Hoffmann M. What Is Morphological Computation? On How the Body Contributes to Cognition and Control. Artificial Life, 23(1): 1–24, 2017. DOI: 10.1162/artl\_a\_00219
+
+\bibitem{liu2025csur}
+Liu H, Guo D, Cangelosi A. Embodied Intelligence: A Synergy of Morphology, Action, Perception and Learning. ACM Computing Surveys, 57(7): Article 186, 2025. DOI: 10.1145/3717059
+
+\bibitem{gptastra2026}
+Has GPT-6-Astra Achieved Embodied Intelligence?（SenseNova 联合研究团队）. arXiv:2610.22471, 2026.
+
+\bibitem{japanrobo2026}
+{\jafont ＡＩロボティクスに関する関係府省連絡会議}. {\jafont ＡＩロボティクス戦略}（AI 机器人战略）. 2026-03-26. \url{https://www.cas.go.jp/jp/seisaku/ai\_robo/dai3/shiryo1.pdf}
+
+\bibitem{mckinsey2026}
+Kelkar A, Heid B, Jansen C, Patel M, Houdou M, Rotman P. Physical AI Could Shift Where Market Value Accrues. McKinsey \& Company, 2026-11-20. \url{https://www.mckinsey.com/industries/industrials/our-insights/physical-ai-is-breaking-out-of-the-box}
+
+\bibitem{savva2019}
+Savva M, Kadian A, Maksymets O, et al. Habitat: A Platform for Embodied AI Research. ICCV 2019. arXiv:1904.01201.
+
+\bibitem{yang2025embodiedbench}
+Yang R, Chen H, Zhang J, et al. EmbodiedBench: Comprehensive Benchmarking Multi-modal Large Language Models for Vision-Driven Embodied Agents. ICML 2025, PMLR 267: 70576–70631.
+
+\bibitem{hellstrom2024}
+Hellström T, Kaiser N, Bensch S. A Taxonomy of Embodiment in the AI Era. Electronics, 13(22): 4441, 2024. DOI: 10.3390/electronics13224441
+
+\bibitem{caict2025}
+中国信息通信研究院, 清华大学电子工程系. 具身智能发展报告（2025 年）. 2026-01. \url{http://www.caict.ac.cn/kxyj/qwfb/bps/202601/P020260130541978285206.pdf}
+
+\bibitem{lee2008}
+Lee E A. Cyber Physical Systems: Design Challenges. 11th IEEE International Symposium on Object-Oriented and Real-Time Distributed Computing (ISORC), 2008: 363–369. DOI: 10.1109/ISORC.2008.25
+
+\bibitem{caict2024}
+中国信息通信研究院, 北京人形机器人创新中心有限公司. 具身智能发展报告（2024 年）. 2024-08. \url{https://www.caict.ac.cn/kxyj/qwfb/bps/202408/P020240830312499650772.pdf}
+
+\bibitem{onex2026}
+1X. NEO. \url{https://www.1x.tech/neo}
+
+\bibitem{bmw2026}
+BMW Group. BMW Group Advances the Use of Physical AI in Production with Figure 03 Project in Spartanburg. 2026-06-25. \url{https://newsroom.bmwgroup.com/global/bmw-group-advances-the-use-of-physical-ai-in-production-with-figure-03-project-in-spartanburg}
+
+\bibitem{citi2025}
+Citi Research. Embodied Intelligence: The Rise of Physical AI. 2025-12-05. \url{https://www.citigroup.com/global/insights/embodied-intelligence-the-rise-of-physical-ai}
+
+\bibitem{feili2025}
+Li F-F. From Words to Worlds: Spatial Intelligence is AI's Next Frontier. Dr. Fei-Fei Li (Substack), 2025-11-10. \url{https://drfeifei.substack.com/p/from-words-to-worlds-spatial-intelligence}
+
+\bibitem{gartner2024}
+Gartner. Gartner Identifies the Top 10 Strategic Technology Trends for 2025. 2024-10-21. \url{https://www.gartner.com/en/newsroom/press-releases/2024-10-21-gartner-identifies-the-top-10-strategic-technology-trends-for-2025}
+
+\bibitem{iso2021}
+ISO. ISO 8373:2021, Robotics — Vocabulary. 2021.
+
+\bibitem{isoiec2022}
+ISO/IEC. ISO/IEC 22989:2022, Information Technology — Artificial Intelligence — Artificial Intelligence Concepts and Terminology. 2022.
+
+\bibitem{ieee2025}
+IEEE. P3704: Standard for Evaluation Methods for the Capabilities of Embodied Intelligence（在研，评估方法标准）. PAR 批准 2025-09-10.
+
+\bibitem{wef2025}
+World Economic Forum. Physical AI: Powering the New Age of Industrial Operations. 2025-09.
+
+\bibitem{eucordis2025}
+European Commission. Accelerating Physical AI: Embodied Intelligence for the Next Frontier of AI-Powered Robotics. HORIZON-EIC-2026-AIC-01, CORDIS, 2025.
+
+\bibitem{std2026}
+工业和信息化部人形机器人与具身智能标准化技术委员会. 人形机器人与具身智能标准体系（2026 版）. 2026-02-28. \url{https://miittc8.cie.org.cn/}
+
+\bibitem{oneill2024}
+Open X-Embodiment Collaboration. Open X-Embodiment: Robotic Learning Datasets and RT-X Models. ICRA 2024: 6892–6903. arXiv:2310.08864.
+
+\bibitem{black2024}
+Black K, Brown N, Driess D, et al. $\pi_0$: A Vision-Language-Action Flow Model for General Robot Control. Robotics: Science and Systems XXI (RSS 2025). arXiv:2410.24164.
+
+\bibitem{kim2024}
+Kim M J, Pertsch K, Karamcheti S, et al. OpenVLA: An Open-Source Vision-Language-Action Model. CoRL 2024, PMLR 270: 2679–2713.
+
+\bibitem{nvidiagroot2025}
+Bjorck J, Castañeda F, Cherniadev N, et al. GR00T N1: An Open Foundation Model for Generalist Humanoid Robots. arXiv:2503.14734, 2025.
+
+\bibitem{sanctuary}
+Sanctuary AI. 官网. \url{https://sanctuary.ai/}
+
+\bibitem{firoozi2025}
+Firoozi R, Tucker J, Tian S, et al. Foundation Models in Robotics: Applications, Challenges, and the Future. The International Journal of Robotics Research, 44(5): 701–739, 2025. DOI: 10.1177/02783649241281508
+
+\bibitem{liu2024survey}
+Liu Y, Chen W, Bai Y, Liang X, Li G, Gao W, Lin L. Aligning Cyber Space with Physical World: A Comprehensive Survey on Embodied AI. IEEE/ASME Transactions on Mechatronics, 30(6): 7253–7274, 2025. DOI: 10.1109/TMECH.2025.3574943
+
+\bibitem{brohan2023}
+Brohan A, Brown N, Carbajal J, et al. RT-2: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control. arXiv:2307.15818, 2023.
+
+\bibitem{figure_helix}
+Figure AI. Helix. 2025-02-20. \url{https://www.figure.ai/news/helix}
+
+\bibitem{figure_seriesc}
+Figure AI. Series C. 2025-09-16. \url{https://www.figure.ai/news/series-c}
+
+\bibitem{skild}
+Skild AI. 官网. \url{https://www.skild.ai/}
+
+\bibitem{pi}
+Physical Intelligence. 官网. \url{https://physicalintelligence.company/}
+
+\bibitem{agibot}
+智元机器人. 公司介绍. \url{https://www.agibot.com.cn/about/company}
+
+\bibitem{livescience2024}
+Allison P R. What is embodied AI? Live Science, 2024-12-29. \url{https://www.livescience.com/technology/robotics/what-is-embodied-ai}
+
+\bibitem{plan2026}
+中共中央. 中共中央关于制定国民经济和社会发展第十五个五年规划的建议. 2025-10-23. \url{https://www.gov.cn/zhengce/202510/content\_7046050.htm}
+
+\bibitem{ndrc2025}
+国家发展和改革委员会. 国家发展改革委 11 月份新闻发布会（文字实录）. 2025-11-27. \url{https://www.ndrc.gov.cn/xwdt/wszb/11yxwfbh1/wzsl/}
+
+\bibitem{baai2026}
+北京智源人工智能研究院. 2026 十大 AI 技术趋势. 2026-01-08. \url{https://hub.baai.ac.cn/view/51757}
+
+\bibitem{beijing2025}
+北京市科学技术委员会, 中关村科技园区管理委员会, 北京市发展和改革委员会, 北京市经济和信息化局. 北京具身智能科技创新与产业培育行动计划（2025—2027 年）. 京科信发〔2025〕36 号, 2025-02-28. \url{https://www.beijing.gov.cn/zhengce/zhengcefagui/202503/t20250304\_4024579.html}
+
+\bibitem{galbot}
+银河通用. 官网. \url{https://www.galbot.com/}
+
+\bibitem{liberai2026}
+月之暗面（Kimi 企业产品与解决方案）. LiberAI 案例：让智能在真实世界持续进化（企业案例稿）. 微信公众号, 2026-11-24. \url{https://mp.weixin.qq.com/s/N9P0CyC83upRjOJxRQyf1Q}
+
+\bibitem{chenby2024}
+陈博远. 随笔：2024 的我们应该如何看待具身智能. 2024-06-16. \url{https://www.boyuan.space/blogs/jushenzhineng.html}
+
+\bibitem{chenxd2026}
+李瑞璐. 中国工程院院士陈学东：具身智能将赋能新一代智能制造，驱动第四次工业革命. 人民邮电报, 2026-11-20. \url{https://mp.weixin.qq.com/s/auo7RGbgSZ76p88uqdr2xA}
+
+\bibitem{agnesrepo2026}
+Agnes AI Systems Team. Agnes Harness: A pluggable agent harness for Forward Deployed Engineering (FDE). GitHub: AgnesAI-Labs/agnes-harness, 2026. \url{https://github.com/AgnesAI-Labs/agnes-harness}
+
+\bibitem{agnestr2026}
+Agnes AI Systems Team. Agnes Harness Technical Report. GitHub: AgnesAI-Labs/Agnes-Harness-Technical-Report-Nov-2026, 2026. \url{https://github.com/AgnesAI-Labs/Agnes-Harness-Technical-Report-Nov-2026}
+
+\bibitem{ubtech}
+优必选科技. 官网：公司简介. \url{https://www.ubtrobot.com/cn/about/company-profile}
+
+\bibitem{brooks1991}
+Brooks R A. Intelligence without Representation. Artificial Intelligence, 47(1–3): 139–159, 1991. DOI: 10.1016/0004-3702(91)90053-M
+
+\bibitem{varela1991}
+Varela F J, Thompson E, Rosch E. The Embodied Mind: Cognitive Science and Human Experience. MIT Press, 1991.
+
+\bibitem{dreyfus1992}
+Dreyfus H L. What Computers Still Can't Do: A Critique of Artificial Reason. MIT Press, 1992.
+
+\bibitem{newen2018}
+Newen A, De Bruin L, Gallagher S (eds.). The Oxford Handbook of 4E Cognition. Oxford University Press, 2018. DOI: 10.1093/oxfordhb/9780198735410.001.0001
+
+\bibitem{shapiro2026}
+Shapiro L, Spaulding S, Dove G. Embodied Cognition. Stanford Encyclopedia of Philosophy, 2026 年 substantive revision. \url{https://plato.stanford.edu/entries/embodied-cognition/}
+
+\bibitem{zhangbo2025}
+张钹. 具身智能推动实现通用人工智能（科技名家笔谈）. 人民日报海外版, 2025-06-09(09).
+
+\bibitem{feng2025}
+Feng T, Wang X, Jiang Y-G, Zhu W. Embodied AI: From LLMs to World Models. IEEE Circuits and Systems Magazine, 25(4): 14–37, 2025. DOI: 10.1109/MCAS.2025.3603693
+
+\bibitem{sun2024}
+Sun F, Chen R, Ji T, Luo Y, Zhou H, Liu H. A Comprehensive Survey on Embodied Intelligence: Advancements, Challenges, and Future Perspectives. CAAI Artificial Intelligence Research, 3: 9150042, 2024. DOI: 10.26599/AIR.2024.9150042
+
+\bibitem{wangsung2025}
+Wang Y, Sun A. Toward Embodied AGI: A Review of Embodied AI and the Road Ahead. arXiv:2505.14235, 2025.
+
+\bibitem{duan2022}
+Duan J, Yu S, Tan H L, Zhu H, Tan C. A Survey of Embodied AI: From Simulators to Research Tasks. IEEE Transactions on Emerging Topics in Computational Intelligence, 6(2): 230–244, 2022. DOI: 10.1109/TETCI.2022.3141105
+
+\bibitem{ccf2023}
+卢策吾, 王鹤. 具身智能 | CCF 专家谈术语. 中国计算机学会, 2023-07-22. \url{https://www.ccf.org.cn/Media\_list/gzwyh/jsjsysdwyh/2023-07-22/794317.shtml}
+
+\bibitem{kejiribao2024}
+崔爽. 具身智能：步入 AI 舞台中央？. 科技日报, 2024-05-27. \url{http://kpzg.people.com.cn/n1/2024/0527/c404214-40243832.html}
+
+\bibitem{tantn2025}
+杨光. 中国科学院院士谭铁牛：具身智能发展五大趋势预测. 中国信息化周报, 2025-04-03. \url{https://www.nju.edu.cn/info/1056/412131.htm}
+
+\bibitem{zhangwei2025}
+张伟男, 刘挺. 具身智能的研究与应用. 智能系统学报, 2025, 20(1): 255–262. DOI: 10.11992/tis.202406044
+
+\bibitem{zhangfeng2025}
+张峰. 张峰：具身智能将成为人工智能走进真实物理世界的关键路口（“AI 大模型赋能机器人与具身智能产业新范式”活动演讲实录，未经本人审阅）. 新浪财经, 2025-08-10. \url{https://finance.sina.com.cn/meeting/2025-08-10/doc-infknpkc6952150.shtml}
+
+\bibitem{yao2025}
+姚期智在全球开发者先锋大会暨国际具身智能技能大赛开幕式上的致辞. 见: 人民网上海频道, 2025-12-13. \url{http://sh.people.com.cn/n2/2025/1213/c134768-41441709.html}
+
+\bibitem{ia2025}
+中国科学院自动化研究所. 具身智能学科交叉战略研讨会顺利召开. 2025-02-06. \url{http://www.ia.cas.cn/xwzx/jryw/202502/t20250206\_7524955.html}
+
+\bibitem{nmi2026}
+From Embodied Intelligence to Physical AI（社论）. Nature Machine Intelligence, 8(4): 491–492, 2026. DOI: 10.1038/s42256-026-01239-3
+
+\bibitem{monograph2026}
+Zhang W, Shen C, Xue T, et al. Physical AI: Concepts, Techniques, and Challenges. arXiv:2610.27045, 2026.
+
+\bibitem{tong2026}
+Feng T T, Wang X, Zhu W. Self-evolving Embodied AI. arXiv:2602.04411, 2026.
+
+\bibitem{ma2026}
+Ma Y, Song Z, Zhuang Y, Hao J, King I. A Survey on Vision-Language-Action Models for Embodied AI. IEEE Transactions on Neural Networks and Learning Systems, 2026. DOI: 10.1109/TNNLS.2025.3650584
+
+\bibitem{hoffmann2025}
+Hoffmann M, Patni S P. Embodied AI in Machine Learning: Is It Really Embodied? In: Macrine S L, Fugate J M B, Abdulali A, Hughes J (eds.). Embodied Intelligence: Multidisciplinary Perspectives on Natural, Artificial, and Hybrid Systems. MIT Press, 2026: 203–228. DOI: 10.7551/mitpress/15999.003.0017
+
+\bibitem{stankovic1988}
+Stankovic J A. Misconceptions about Real-Time Computing: A Serious Problem for Next-Generation Systems. Computer, 21(10): 10–19, 1988. DOI: 10.1109/2.7053
+
+\bibitem{zador2023}
+Zador A, Escola S, Richards B, et al. Catalyzing Next-Generation Artificial Intelligence through NeuroAI. Nature Communications, 14: 1597, 2023. DOI: 10.1038/s41467-023-37180-x
+
+\bibitem{gupta2021}
+Gupta A, Savarese S, Ganguli S, Fei-Fei L. Embodied Intelligence via Learning and Evolution. Nature Communications, 12: 5721, 2021. DOI: 10.1038/s41467-021-25874-z
+
+\bibitem{pfeifer2007}
+Pfeifer R, Lungarella M, Iida F. Self-Organization, Embodiment, and Biologically Inspired Robotics. Science, 318(5853): 1088–1093, 2007. DOI: 10.1126/science.1145803
+
+\bibitem{ewa2025}
+Hong Y, Sun R, Li B, et al. Embodied Web Agents: Bridging Physical-Digital Realms for Integrated Agent Intelligence. NeurIPS 2025 Datasets and Benchmarks Track. Advances in Neural Information Processing Systems, 38: 53031–53050.
+
+\bibitem{paolo2024}
+Paolo G, Gonzalez-Billandon J, Kégl B. Position: A Call for Embodied AI. ICML 2024, PMLR 235: 39493–39508.
+
+\bibitem{yu2026two}
+余玉桂. 两个不同的目标：机器之心与人工智能的概念解绑. Zenodo: 10.5281/zenodo.23969047, 2026.
+
+\bibitem{yu2026blog}
+余玉桂. 机器之心需要具身吗. 余玉桂战略研究室博客, 2026. \url{https://yuyuguilab.github.io/zh/technology/machine-heart-embodiment/}
+
+\bibitem{beaulieu2023}
+Beaulieu S L, Kriegman S. Glamour Muscles: Why Having a Body Is Not What It Means to Be Embodied. arXiv:2307.08598, 2023.
+
+\bibitem{kadian2020}
+Kadian A, Truong J, Gokaslan A, et al. Sim2Real Predictivity: Does Evaluation in Simulation Predict Real-World Performance? IEEE Robotics and Automation Letters, 5(4): 6670–6677, 2020. DOI: 10.1109/LRA.2020.3013848
+
+\bibitem{chebotar2019}
+Chebotar Y, Handa A, Makoviychuk V, et al. Closing the Sim-to-Real Loop: Adapting Simulation Randomization with Real World Experience. ICRA 2019: 8973–8979. DOI: 10.1109/ICRA.2019.8793789
+
+\bibitem{jiemian2024}
+陆柯言. 人形机器人在展馆出尽风头，商业化步伐比预期更快｜WAIC 观察. 界面新闻, 2024-07-06. \url{https://www.jiemian.com/article/11380635.html}
+
+\bibitem{figure_bmw}
+Figure AI. Production at BMW. 2025-11-19. \url{https://www.figure.ai/news/production-at-bmw}
+
+\bibitem{goldman2022}
+Goldman Sachs. Humanoid Robots: Sooner Than You Might Think. 2022-11-15. \url{https://www.goldmansachs.com/insights/articles/humanoid-robots}
+
+\bibitem{brooks2025}
+Brooks R. Why Today's Humanoids Won't Learn Dexterity. Rodney Brooks (rodneybrooks.com), 2025-09-26. \url{https://rodneybrooks.com/why-todays-humanoids-wont-learn-dexterity/}
+
+\bibitem{goldberg2025}
+Manke K. Are we truly on the verge of the humanoid robot revolution? Berkeley News, 2025-08-27. \url{https://news.berkeley.edu/2025/08/27/are-we-truly-on-the-verge-of-the-humanoid-robot-revolution/}
+
+\bibitem{bloomberg2026}
+Guest P. Humanoid Robots Are the Next Phase of the AI Hype Cycle. Bloomberg, 2026-05-08. \url{https://www.bloomberg.com/news/articles/2026-05-08/humanoid-robots-aren-t-as-advanced-as-the-ai-hype-cycle-suggests}
+
+\bibitem{mittr2026}
+O'Donnell J. The Human Work Behind Humanoid Robots Is Being Hidden. MIT Technology Review, 2026-02-23. \url{https://www.technologyreview.com/2026/02/23/1133508/the-human-work-behind-humanoid-robots-is-being-hidden}
+
+
+\end{thebibliography}
+
+\end{document}
