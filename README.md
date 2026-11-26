@@ -1,6 +1,6 @@
-**English** | [简体中文]
+**English** | [简体中文](README.zh-CN.md)
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24554632.svg)](https://doi.org/10.5281/zenodo.24554632)(README.zh-CN.md)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24554632.svg)](https://doi.org/10.5281/zenodo.24554632)
 
 # Embodied Intelligence: Definition, Clarification, Criteria, and Boundaries
 
