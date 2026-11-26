@@ -29,7 +29,7 @@ tectonic paper_zh.tex   # 中文版
 
 ## 引用
 
-余玉桂. 具身智能：定义、澄清、判据与边界. Zenodo, v1.0.0. doi:[10.5281/zenodo.24554632](https://doi.org/10.5281/zenodo.24554632)（概念 DOI，解析到最新版本）
+余玉桂. 具身智能：定义、澄清、判据与边界. Zenodo, v1.0.1. doi:[10.5281/zenodo.24554632](https://doi.org/10.5281/zenodo.24554632)（概念 DOI，解析到最新版本）
 
 ```bibtex
 @article{yu2026embodied,

@@ -56,7 +56,7 @@
 
 \section{Introduction}\label{sec:intro}
 
-``Embodied intelligence'' was originally a term in robotics and cognitive science; between 2024 and 2026 it entered the policy texts and corporate discourse of many countries. China's Government Work Reports listed it among the future industries in both 2025 and 2026 \cite{govreport2025,govreport2026}; in December 2025 the International Telecommunication Union published the first international standard for embodied artificial intelligence systems, ``Requirements and Framework for Embodied Artificial Intelligence Systems'' \cite{itu2025}, and in February 2026 it established a focus group on embodied AI \cite{caict2026}; eight Chinese universities applied to add an undergraduate major in ``embodied intelligence'' in 2025 \cite{yicai2025}. Governments do not share a name for it: the national plans of Japan and the Republic of Korea adopt physical AI \cite{japan2026,korea2026}; the European Commission calls the robotics revolution ``physical AI'' \cite{eu2025}; the United Kingdom defines smart machines through embodied intelligence \cite{uk2025}; and the United States' AI Action Plan calls autonomous drones, self-driving cars, and robotics ``new innovations in the physical world'' whose ``terminology does not yet exist,'' while the document itself uses neither physical AI nor embodied AI \cite{aiaap2025}. On the corporate and investor side, NVIDIA's chief executive told the Consumer Electronics Show of January 2025 that ``the next frontier of AI is physical AI'' \cite{ces2025}; Figure's humanoids demonstrate logistics work in BMW's plants \cite{figure_f03}; and Morgan Stanley estimates a humanoid robot market of five trillion dollars by 2050 \cite{morganstanley2025}.
+``Embodied intelligence'' was originally a term in robotics and cognitive science; between 2024 and 2026 it entered the policy texts and corporate discourse of many countries. In December 2025 the International Telecommunication Union published the first international standard for embodied artificial intelligence systems, ``Requirements and Framework for Embodied Artificial Intelligence Systems'' \cite{itu2025}, and in February 2026 it established a focus group on embodied AI \cite{caict2026}. Western governments split: the United States' AI Action Plan calls autonomous drones, self-driving cars, and robotics ``new innovations in the physical world'' whose ``terminology does not yet exist,'' while the document itself uses neither physical AI nor embodied AI \cite{aiaap2025}; the European Commission calls the robotics revolution ``physical AI'' \cite{eu2025}; and the United Kingdom defines smart machines through embodied intelligence \cite{uk2025}. Industry and investors follow: NVIDIA's chief executive told the Consumer Electronics Show of January 2025 that ``the next frontier of AI is physical AI'' \cite{ces2025}; Figure's humanoids demonstrate logistics work in BMW's plants \cite{figure_f03}; and Morgan Stanley estimates a humanoid robot market of five trillion dollars by 2050 \cite{morganstanley2025}. In China, the Government Work Reports listed it among the future industries in both 2025 and 2026 \cite{govreport2025,govreport2026}, and eight universities applied to add an undergraduate major in ``embodied intelligence'' in 2025 \cite{yicai2025}; the national plans of Japan and the Republic of Korea adopt physical AI \cite{japan2026,korea2026}. Governments do not share a name for it.
 
 The scale of investment and the scale of actual use are observably apart \cite{caict2026,idc2026,reuters2026}, and the state of the definition is more out of proportion with that attention still. In English the name itself is unstable: the policy think tank CSET judges that the field ``lacks a shared name'' \cite{cset2026} (quotations from Chinese-language sources are translated by the author here and throughout); NVIDIA used embodied AI in its 2024 releases and switched to physical AI from 2025, with no statement distinguishing the two \cite{nvidia2024,ces2025,nvglossary}; and surveys, glossary entries, and encyclopedias each give their own definition (Table~\ref{tab:englishdefinitions}). Ten citable definition sentences exist in the Chinese-language context, disagreeing on four axes---carrier scope, superordinate concept, definitional sentence form, and the source of intelligence (Section~\ref{sec:clarify}). Standardization advances while the term does not keep up: as of August 2026, the 52 national standard-development plans for humanoid robots issued by the national robotics standardization technical committee cover components, datasets, complete machines, system integration, testing, and safety, with no terminology standard \cite{caict2026}; the State Council's opinion on deepening the ``AI+'' action never uses the word \cite{guofa2025}.
 
@@ -91,7 +91,7 @@ Five remarks are needed.
 
 \textit{Fourth, the two limbs differ in form of judgment.} The embodiment limb is decided by the two conditions: E1 is bivalent, and E2 admits of degree through the timing margin. The capacity limb is a capacity concept; its completed form of definition is a measurement \cite{yu2026four}, and there is no bivalent shortcut. Definition 2 is therefore gradual on the capacity side: whether a system is called embodied intelligent depends on the threshold the claimant declares for the capacity limb. Evaluation practice already has a precedent of paired thresholds: an evaluation report judged that GPT-6-Astra ``has largely crossed the threshold of embodied competence, but not yet that of practical embodied intelligence'' \cite{gptastra2026}. Industrial robots are not called embodied intelligence while humanoids are; the difference lies in the threshold on the capacity limb, not on the embodiment limb.
 
-\textit{Fifth, lacking a body does not amount to lacking embodiment.} CAICT's report writes, under physical AI, of systems ``lacking an independent physical body but responsible for managing and optimizing physical infrastructure'' \cite{caict2026}; NVIDIA's embodied AI glossary entry lists ``factories and warehouse facilities'' among embodied AI systems too \cite{nvglossary}. Under our definition, such systems are embodied if they act on physical processes through sensors and actuators; the body is not the criterion, the closed loop is. A Japanese policy document asserts the opposite: physical AI, since it confronts the real world, ``necessarily requires a body'' \cite{japanrobo2026}. Under our definition a body guarantees neither condition: neither the closed loop nor the timing. Consultancy definitions likewise do not limit the concept to single machines: McKinsey divides physical AI systems into those embodied in a single machine and those embedded across multiple devices or infrastructure, their shared defining capability being the use of sensory inputs and learned representations of the surroundings to decide and act in the physical world with minimal human intervention \cite{mckinsey2026}.
+\textit{Fifth, lacking a body does not amount to lacking embodiment.} NVIDIA's embodied AI glossary entry lists ``factories and warehouse facilities'' among embodied AI systems too \cite{nvglossary}; McKinsey divides physical AI systems into those embodied in a single machine and those embedded across multiple devices or infrastructure, their shared defining capability being the use of sensory inputs and learned representations of the surroundings to decide and act in the physical world with minimal human intervention \cite{mckinsey2026}; CAICT's report writes, under physical AI, of systems ``lacking an independent physical body but responsible for managing and optimizing physical infrastructure'' \cite{caict2026}. Under our definition, such systems are embodied if they act on physical processes through sensors and actuators; the body is not the criterion, the closed loop is. A Japanese policy document asserts the opposite: physical AI, since it confronts the real world, ``necessarily requires a body'' \cite{japanrobo2026}. Under our definition a body guarantees neither condition: neither the closed loop nor the timing.
 
 \subsection{Derivation: Six Dimensions Reduced to Two Conditions}\label{sec:derivation}
 
@@ -386,7 +386,7 @@ On criteria: the criterion of embodiment is local---the four tests and the timin
 
 \subsection{Embodied, but the Capacity Insufficient}\label{sec:capacity}
 
-CAICT's 2026 report gives one set of figures: ``monthly operation of fewer than 10 days is not uncommon''; and ``most domestic enterprises remain concentrated on replicating and fine-tuning earlier open models such as $\pi_0$, $\pi_{0.5}$, and OpenVLA, whose base models lag about two generations behind the frontier closed models'' \cite{caict2026}. The previous year's report states that ``whether physical intelligence emerges in the mainstream architecture represented by end-to-end vision--language--action (VLA) models is uncertain'' \cite{caict2025}. International data institutions and the press record the same: IDC reports that over 85 percent of deployments concentrate in performance, education, data collection, and guided-tour scenarios \cite{idc2026}; Reuters quotes industry insiders saying the humanoids ``lack the intelligence needed for general-purpose work'' and that much of what one sees is ``dancing disguised as working'' \cite{reuters2026}. One eleven-month deployment in a BMW plant lists per-shift success rate and intervention counts as targets, not results \cite{figure_bmw}. Goldman Sachs's 2022 judgment reads as the separation of the two limbs: some humanoid robots had mastered mobility and agility, others could handle cognitive and intellectual challenges, and ``none can do both'' \cite{goldman2022}.
+IDC reports that over 85 percent of deployments concentrate in performance, education, data collection, and guided-tour scenarios \cite{idc2026}; Reuters quotes industry insiders saying the humanoids ``lack the intelligence needed for general-purpose work'' and that much of what one sees is ``dancing disguised as working'' \cite{reuters2026}; one eleven-month deployment in a BMW plant lists per-shift success rate and intervention counts as targets, not results \cite{figure_bmw}; and Goldman Sachs's 2022 judgment reads as the separation of the two limbs: some humanoid robots had mastered mobility and agility, others could handle cognitive and intellectual challenges, and ``none can do both'' \cite{goldman2022}. On the domestic side, CAICT's 2026 report gives one set of figures: ``monthly operation of fewer than 10 days is not uncommon''; and ``most domestic enterprises remain concentrated on replicating and fine-tuning earlier open models such as $\pi_0$, $\pi_{0.5}$, and OpenVLA, whose base models lag about two generations behind the frontier closed models'' \cite{caict2026}. The previous year's report states that ``whether physical intelligence emerges in the mainstream architecture represented by end-to-end vision--language--action (VLA) models is uncertain'' \cite{caict2025}.
 
 These systems close their loops in real environments, their timing set by the environment, and E1 and E2 hold. What is insufficient is the capacity limb: low utilization shows that these systems do not yet sustain use in their target environment class. Under the conjunction confusion of Section~\ref{sec:slides}, the holding of E1 and E2 is read as the holding of both limbs, and such systems come to be called ``embodied intelligence'' wholesale.
 
@@ -448,35 +448,20 @@ The tools of this paper come from the human-referential fitting theory: the conc
 
 \begin{thebibliography}{110}\small
 
-\bibitem{govreport2025}
-State Council of the People's Republic of China. Government Work Report (2025). 2025-03-05. \url{https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm}
-
-\bibitem{govreport2026}
-State Council of the People's Republic of China. Government Work Report (2026). 2026-03-05. \url{https://www.gov.cn/yaowen/liebiao/202603/content_7062625.htm}
-
 \bibitem{itu2025}
 ITU-T. F.748.66 (12/2025): Requirements and Framework for Embodied Artificial Intelligence Systems. Approved 2025-12-14.
 
 \bibitem{caict2026}
 China Academy of Information and Communications Technology (AI Research Institute), Tsinghua University Department of Electronic Engineering, Embodied Intelligence Test Laboratory. Embodied Intelligence Development Report (2026)（具身智能发展报告（2026 年））. 2026-10. \url{https://www.caict.ac.cn/kxyj/qwfb/ztbg/202610/P020261024380797577424.pdf}
 
-\bibitem{yicai2025}
-Lin, Jing. Eight Double First-Class Universities Unusually Lay Out ``Embodied Intelligence'' Majors. Yicai, 2025-11-14. \url{https://www.yicai.com/news/102912814.html}
-
-\bibitem{japan2026}
-Cabinet Office of Japan. Artificial Intelligence Basic Plan（人工知能基本計画）. Cabinet decision, 2025-12-23. \url{https://www8.cao.go.jp/cstp/ai/ai_plan/aiplan_20251223.pdf}
-
-\bibitem{korea2026}
-Ministry of Science and ICT, Republic of Korea（{\hangulfont 과학기술정보통신부}）. Strategy for Securing Core Competitiveness in Physical AI（{\hangulfont 물리적 인공지능(피지컬 AI) 핵심 경쟁력 확보 전략}）. 2026-07-01.
+\bibitem{aiaap2025}
+The White House. America's AI Action Plan. 2025-07. \url{https://www.whitehouse.gov/wp-content/uploads/2025/07/Americas-AI-Action-Plan.pdf}
 
 \bibitem{eu2025}
 European Commission. Apply AI Strategy. COM(2025) 723 final, 2025-10-08.
 
 \bibitem{uk2025}
 UK Robotics Growth Partnership. Smart Machines Strategy 2035. 2025-02-11.
-
-\bibitem{aiaap2025}
-The White House. America's AI Action Plan. 2025-07. \url{https://www.whitehouse.gov/wp-content/uploads/2025/07/Americas-AI-Action-Plan.pdf}
 
 \bibitem{ces2025}
 Caulfield, B. CES 2025: AI Advancing at ``Incredible Pace,'' NVIDIA CEO Says. NVIDIA Blog, 2025-01-06. \url{https://blogs.nvidia.com/blog/ces-2025-jensen-huang/}
@@ -486,6 +471,21 @@ Figure AI. F.03 at BMW. 2026-06-30. \url{https://www.figure.ai/news/f-03-at-bmw}
 
 \bibitem{morganstanley2025}
 Morgan Stanley. Humanoids: A \$5 Trillion Market. 2025-05-14. \url{https://www.morganstanley.com/insights/articles/humanoid-robot-market-5-trillion-by-2050}
+
+\bibitem{govreport2025}
+State Council of the People's Republic of China. Government Work Report (2025). 2025-03-05. \url{https://www.gov.cn/yaowen/liebiao/202503/content_7013163.htm}
+
+\bibitem{govreport2026}
+State Council of the People's Republic of China. Government Work Report (2026). 2026-03-05. \url{https://www.gov.cn/yaowen/liebiao/202603/content_7062625.htm}
+
+\bibitem{yicai2025}
+Lin, Jing. Eight Double First-Class Universities Unusually Lay Out ``Embodied Intelligence'' Majors. Yicai, 2025-11-14. \url{https://www.yicai.com/news/102912814.html}
+
+\bibitem{japan2026}
+Cabinet Office of Japan. Artificial Intelligence Basic Plan（人工知能基本計画）. Cabinet decision, 2025-12-23. \url{https://www8.cao.go.jp/cstp/ai/ai_plan/aiplan_20251223.pdf}
+
+\bibitem{korea2026}
+Ministry of Science and ICT, Republic of Korea（{\hangulfont 과학기술정보통신부}）. Strategy for Securing Core Competitiveness in Physical AI（{\hangulfont 물리적 인공지능(피지컬 AI) 핵심 경쟁력 확보 전략}）. 2026-07-01.
 
 \bibitem{idc2026}
 IDC. Humanoid Robotics Commercialization Trends 2026. 2026-04-23. \url{https://www.idc.com/resource-center/blog/humanoid-robotics-commercialization-2026/}
@@ -526,11 +526,11 @@ Liu, H., Guo, D., Cangelosi, A. Embodied Intelligence: A Synergy of Morphology, 
 \bibitem{gptastra2026}
 SenseNova Joint Research Team. Has GPT-6-Astra Achieved Embodied Intelligence? arXiv:2610.22471, 2026.
 
-\bibitem{japanrobo2026}
-Inter-Ministerial Meeting on AI Robotics. AI Robotics Strategy（{\jafont ＡＩロボティクス戦略}）. 2026-03-26. \url{https://www.cas.go.jp/jp/seisaku/ai_robo/dai3/shiryo1.pdf}
-
 \bibitem{mckinsey2026}
 Kelkar, A., Heid, B., Jansen, C., Patel, M., Houdou, M., Rotman, P. Physical AI Could Shift Where Market Value Accrues. McKinsey \& Company, 2026-11-20. \url{https://www.mckinsey.com/industries/industrials/our-insights/physical-ai-is-breaking-out-of-the-box}
+
+\bibitem{japanrobo2026}
+Inter-Ministerial Meeting on AI Robotics. AI Robotics Strategy（{\jafont ＡＩロボティクス戦略}）. 2026-03-26. \url{https://www.cas.go.jp/jp/seisaku/ai_robo/dai3/shiryo1.pdf}
 
 \bibitem{savva2019}
 Savva, M., Kadian, A., Maksymets, O., et al. Habitat: A Platform for Embodied AI Research. ICCV 2019. arXiv:1904.01201.

@@ -29,7 +29,7 @@ Requires [tectonic](https://tectonic-typesetting.dev/). The first run downloads 
 
 ## Cite
 
-Yugui Yu. *Embodied Intelligence: Definition, Clarification, Criteria, and Boundaries*. Zenodo, v1.0.0. doi:[10.5281/zenodo.24554632](https://doi.org/10.5281/zenodo.24554632) (concept DOI; resolves to the latest version)
+Yugui Yu. *Embodied Intelligence: Definition, Clarification, Criteria, and Boundaries*. Zenodo, v1.0.1. doi:[10.5281/zenodo.24554632](https://doi.org/10.5281/zenodo.24554632) (concept DOI; resolves to the latest version)
 
 ```bibtex
 @article{yu2026embodied,
